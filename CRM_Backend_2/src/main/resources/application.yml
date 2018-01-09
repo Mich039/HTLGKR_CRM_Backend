@@ -1,0 +1,21 @@
+spring:
+  datasource:  
+    url: jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=false;MODE=MSSQLSERVER
+    username: sa
+    password: 
+    driver-class-name: org.h2.Driver
+  jpa:
+    generate-ddl: true
+    hibernate:
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+      ddl-auto: create-drop     
+    show-sql: false
+  application:
+    name: HTLCRM
+  h2:
+    console:
+      path: /h2
+      enabled: true
+server:
+    port: 1234 
