@@ -1,6 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <persistence version="2.1" xmlns="http://xmlns.jcp.org/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd">
 	<persistence-unit name="CRM_Backend_2">
-		<class>com.example.demo.domain.Employee</class>
+		<class>com.htl.crm.domain.AccessRight</class>
+		<class>com.htl.crm.domain.Address</class>
+		<class>com.htl.crm.domain.Addresshistorie</class>
+		<class>com.htl.crm.domain.ArPr</class>
+		<class>com.htl.crm.domain.Bill</class>
+		<class>com.htl.crm.domain.Event</class>
+		<class>com.htl.crm.domain.EventInfo</class>
+		<class>com.htl.crm.domain.EventInfoType</class>
+		<class>com.htl.crm.domain.EventType</class>
+		<class>com.htl.crm.domain.Facility</class>
+		<class>com.htl.crm.domain.Invitation</class>
+		<class>com.htl.crm.domain.Person</class>
+		<class>com.htl.crm.domain.PData</class>
+		<class>com.htl.crm.domain.PDatatype</class>
+		<class>com.htl.crm.domain.PRole</class>
+		<class>com.htl.crm.domain.Receiver</class>
+		<class>com.htl.crm.domain.Role</class>
+		<class>com.htl.crm.domain.RType</class>
+		<class>com.htl.crm.domain.Template</class>
 	</persistence-unit>
 </persistence>
