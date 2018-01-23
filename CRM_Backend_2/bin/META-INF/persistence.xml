@@ -12,13 +12,13 @@
 		<class>com.htl.crm.domain.EventType</class>
 		<class>com.htl.crm.domain.Facility</class>
 		<class>com.htl.crm.domain.Invitation</class>
-		<class>com.htl.crm.domain.Person</class>
 		<class>com.htl.crm.domain.PData</class>
 		<class>com.htl.crm.domain.PDatatype</class>
 		<class>com.htl.crm.domain.PRole</class>
+		<class>com.htl.crm.domain.Person</class>
+		<class>com.htl.crm.domain.RType</class>
 		<class>com.htl.crm.domain.Receiver</class>
 		<class>com.htl.crm.domain.Role</class>
-		<class>com.htl.crm.domain.RType</class>
 		<class>com.htl.crm.domain.Template</class>
 	</persistence-unit>
 </persistence>
