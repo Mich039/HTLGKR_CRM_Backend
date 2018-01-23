@@ -15,7 +15,12 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 import com.htl.crm.domain.AccessRight;
 import com.htl.crm.domain.ArPr;
+import com.htl.crm.domain.PData;
+import com.htl.crm.domain.PDatatype;
+import com.htl.crm.domain.Person;
 import com.htl.crm.repositories.AccessRightRepo;
+import com.htl.crm.repositories.PDatatypeRepo;
+import com.htl.crm.repositories.PersonRepo;
 
 @RestController("/help/")
 @EnableWebMvc
@@ -41,5 +46,31 @@ public class CrmController {
 
 		return ResponseEntity.status(HttpStatus.OK).body("Test" + string);
 	}
+	
+	@Autowired
+	private PersonRepo personRepo;
+	@Autowired
+	private PDatatypeRepo pdatatypeRepo;
+	
+	@PostMapping(value="/login/logindata", produces="application/json")
+	public ResponseEntity<String> logindata(@RequestBody String password, String username){
+		
+		List<Person> pl=personRepo.findAll();
+		for (Person person : pl) {
+			for(PData pdata: person.getPData()) {
+				if(pdata.getPDatatype().getPDatatypeId() == pdatatypeRepo.findBy("password").getPDatatypeId()) {
+					if(pdata.getValue().equals(password)) {
+						if(pdata.getPDatatype().getPDatatypeId() == pdatatypeRepo.findBy("username").getPDatatypeId()) {
+							if(pdata.getValue().equals(username))
+								return ResponseEntity.status(HttpStatus.OK).body(Long.toString(pdata.getPDataId()));
+						}
+					}
+				}
+				return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Username or Password wrong");
+			}
+		}
+		return null;
+
+	}; 
 
 }

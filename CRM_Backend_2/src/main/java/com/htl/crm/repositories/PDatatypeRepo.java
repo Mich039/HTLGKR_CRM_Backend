@@ -6,4 +6,5 @@ import com.htl.crm.domain.PDatatype;
 
 public interface PDatatypeRepo extends JpaRepository<PDatatype, Integer> {
 	PDatatype findOne(Integer id);
+	PDatatype findBy(String type);
 }
