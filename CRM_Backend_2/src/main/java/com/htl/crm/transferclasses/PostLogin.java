@@ -1,6 +1,8 @@
 package com.htl.crm.transferclasses;
 
-public class PostLogin {
+import java.io.Serializable;
+
+public class PostLogin implements Serializable{
 	private String benutzername;
 	private String passwort;
 	
