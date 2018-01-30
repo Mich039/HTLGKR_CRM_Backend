@@ -1,5 +1,7 @@
 package com.htl.crm.domain;
 
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.forwardedUrl;
+
 import java.io.Serializable;
 import javax.persistence.*;
 import java.util.Set;
@@ -210,6 +212,15 @@ public class Person implements Serializable {
 		template.setPerson(null);
 
 		return template;
+	}
+	
+	public PData getPDataFromType(String type) {
+		for(PData pdata : this.PData) {
+			if(pdata.getPDatatype().getType().equals(type)) {
+				return pdata;
+			}
+		}
+		return null;
 	}
 
 }
