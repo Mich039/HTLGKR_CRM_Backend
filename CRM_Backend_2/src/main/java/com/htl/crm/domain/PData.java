@@ -15,33 +15,33 @@ public class PData implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@SequenceGenerator(name="P_DATA_PDATAID_GENERATOR", sequenceName="P_DATA_SEQ")
-	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="P_DATA_PDATAID_GENERATOR")
-	@Column(name="P_DATA_ID")
-	private long pDataId;
+	@SequenceGenerator(name="P_DATA_ID_GENERATOR", sequenceName="P_DATA_ID_SEQ")
+	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="P_DATA_ID_GENERATOR")
+	@Column(unique=true, nullable=false, precision=22)
+	private long id;
 
-	@Column(name="\"VALUE\"")
+	@Column(name="\"VALUE\"", length=500)
 	private String value;
 
 	//bi-directional many-to-one association to Person
 	@ManyToOne
-	@JoinColumn(name="PERSON_ID")
+	@JoinColumn(name="PERSON_FK", nullable=false)
 	private Person person;
 
 	//bi-directional many-to-one association to PDatatype
 	@ManyToOne
-	@JoinColumn(name="P_DATATYPE_ID")
+	@JoinColumn(name="P_DATATYPE_FK", nullable=false)
 	private PDatatype PDatatype;
 
 	public PData() {
 	}
 
-	public long getPDataId() {
-		return this.pDataId;
+	public long getId() {
+		return this.id;
 	}
 
-	public void setPDataId(long pDataId) {
-		this.pDataId = pDataId;
+	public void setId(long id) {
+		this.id = id;
 	}
 
 	public String getValue() {

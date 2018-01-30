@@ -1,10 +1,8 @@
 package com.htl.crm.domain;
 
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.forwardedUrl;
-
 import java.io.Serializable;
 import javax.persistence.*;
-import java.util.Set;
+import java.util.List;
 
 
 /**
@@ -12,65 +10,71 @@ import java.util.Set;
  * 
  */
 @Entity
+@Table(name="PERSON")
 @NamedQuery(name="Person.findAll", query="SELECT p FROM Person p")
 public class Person implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@SequenceGenerator(name="PERSON_PERSONID_GENERATOR", sequenceName="PERSON_SEQ")
-	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="PERSON_PERSONID_GENERATOR")
-	@Column(name="PERSON_ID")
-	private long personId;
+	@SequenceGenerator(name="PERSON_ID_GENERATOR", sequenceName="PERSON_ID_SEQ")
+	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="PERSON_ID_GENERATOR")
+	@Column(unique=true, nullable=false, precision=22)
+	private long id;
 
 	//bi-directional many-to-one association to Addresshistorie
 	@OneToMany(mappedBy="person")
-	private Set<Addresshistorie> addresshistories;
+	private List<Addresshistorie> addresshistories;
 
 	//bi-directional many-to-one association to Event
 	@OneToMany(mappedBy="person")
-	private Set<Event> events;
+	private List<Event> events;
 
 	//bi-directional many-to-one association to PRole
 	@ManyToOne
-	@JoinColumn(name="P_ROLE_P_ROLE_ID")
+	@JoinColumn(name="P_ROLE_FK", nullable=false)
 	private PRole PRole;
 
-	//bi-directional many-to-one association to Role
+	//bi-directional many-to-one association to Relation
 	@ManyToOne
-	private Role role;
+	@JoinColumn(name="RELATION_FK", nullable=false)
+	private Relation relation;
+
+	//bi-directional many-to-one association to PersonTodo
+	@OneToMany(mappedBy="person")
+	private List<PersonTodo> personTodos;
 
 	//bi-directional many-to-one association to PData
 	@OneToMany(mappedBy="person")
-	private Set<PData> PData;
+	private List<PData> PData;
 
 	//bi-directional many-to-one association to Receiver
 	@OneToMany(mappedBy="person")
-	private Set<Receiver> receivers;
+	private List<Receiver> receivers;
 
-	//bi-directional many-to-one association to Role
+	//bi-directional many-to-one association to Relation
 	@OneToMany(mappedBy="person")
-	private Set<Role> roles;
+	private List<Relation> relations;
 
 	//bi-directional many-to-one association to Template
 	@OneToMany(mappedBy="person")
-	private Set<Template> templates;
+	private List<Template> templates;
 
 	public Person() {
 	}
 
-	public long getPersonId() {
-		return this.personId;
+	public long getId() {
+		return this.id;
 	}
 
-	public void setPersonId(long personId) {
-		this.personId = personId;
+	public void setId(long id) {
+		this.id = id;
 	}
 
-	public Set<Addresshistorie> getAddresshistories() {
+	public List<Addresshistorie> getAddresshistories() {
 		return this.addresshistories;
 	}
 
-	public void setAddresshistories(Set<Addresshistorie> addresshistories) {
+	public void setAddresshistories(List<Addresshistorie> addresshistories) {
 		this.addresshistories = addresshistories;
 	}
 
@@ -88,11 +92,11 @@ public class Person implements Serializable {
 		return addresshistory;
 	}
 
-	public Set<Event> getEvents() {
+	public List<Event> getEvents() {
 		return this.events;
 	}
 
-	public void setEvents(Set<Event> events) {
+	public void setEvents(List<Event> events) {
 		this.events = events;
 	}
 
@@ -118,19 +122,41 @@ public class Person implements Serializable {
 		this.PRole = PRole;
 	}
 
-	public Role getRole() {
-		return this.role;
+	public Relation getRelation() {
+		return this.relation;
 	}
 
-	public void setRole(Role role) {
-		this.role = role;
+	public void setRelation(Relation relation) {
+		this.relation = relation;
 	}
 
-	public Set<PData> getPData() {
+	public List<PersonTodo> getPersonTodos() {
+		return this.personTodos;
+	}
+
+	public void setPersonTodos(List<PersonTodo> personTodos) {
+		this.personTodos = personTodos;
+	}
+
+	public PersonTodo addPersonTodo(PersonTodo personTodo) {
+		getPersonTodos().add(personTodo);
+		personTodo.setPerson(this);
+
+		return personTodo;
+	}
+
+	public PersonTodo removePersonTodo(PersonTodo personTodo) {
+		getPersonTodos().remove(personTodo);
+		personTodo.setPerson(null);
+
+		return personTodo;
+	}
+
+	public List<PData> getPData() {
 		return this.PData;
 	}
 
-	public void setPData(Set<PData> PData) {
+	public void setPData(List<PData> PData) {
 		this.PData = PData;
 	}
 
@@ -148,11 +174,11 @@ public class Person implements Serializable {
 		return PData;
 	}
 
-	public Set<Receiver> getReceivers() {
+	public List<Receiver> getReceivers() {
 		return this.receivers;
 	}
 
-	public void setReceivers(Set<Receiver> receivers) {
+	public void setReceivers(List<Receiver> receivers) {
 		this.receivers = receivers;
 	}
 
@@ -170,33 +196,33 @@ public class Person implements Serializable {
 		return receiver;
 	}
 
-	public Set<Role> getRoles() {
-		return this.roles;
+	public List<Relation> getRelations() {
+		return this.relations;
 	}
 
-	public void setRoles(Set<Role> roles) {
-		this.roles = roles;
+	public void setRelations(List<Relation> relations) {
+		this.relations = relations;
 	}
 
-	public Role addRole(Role role) {
-		getRoles().add(role);
-		role.setPerson(this);
+	public Relation addRelation(Relation relation) {
+		getRelations().add(relation);
+		relation.setPerson(this);
 
-		return role;
+		return relation;
 	}
 
-	public Role removeRole(Role role) {
-		getRoles().remove(role);
-		role.setPerson(null);
+	public Relation removeRelation(Relation relation) {
+		getRelations().remove(relation);
+		relation.setPerson(null);
 
-		return role;
+		return relation;
 	}
 
-	public Set<Template> getTemplates() {
+	public List<Template> getTemplates() {
 		return this.templates;
 	}
 
-	public void setTemplates(Set<Template> templates) {
+	public void setTemplates(List<Template> templates) {
 		this.templates = templates;
 	}
 
@@ -214,13 +240,14 @@ public class Person implements Serializable {
 		return template;
 	}
 	
-	public PData getPDataFromType(String type) {
-		for(PData pdata : this.PData) {
-			if(pdata.getPDatatype().getType().equals(type)) {
-				return pdata;
-			}
-		}
-		return null;
-	}
+    public PData getPDataFromType(String type) {
+        for(PData pdata : this.PData) {
+               if(pdata.getPDatatype().getType().equals(type)) {
+                      return pdata;
+               }
+        }
+        return null;
+  }
+
 
 }

@@ -31,24 +31,6 @@ public class CrmController {
 	@Autowired
 	private AccessRightRepo accessRightRepo;
 
-	@GetMapping(value = "/test/{id}", produces = "application/json")
-	public ResponseEntity<String> test(@PathVariable int id) throws IOException {
-
-		AccessRight ar = accessRightRepo.findOne(id);
-		// Wenn nicht gefunden ar == null
-		List<ArPr> list = (List<ArPr>) ar.getArPrs();
-		// Wenn kein Inhalt list.size() == 0
-		ar.setAccessRight("fhadshfasdo");
-		accessRightRepo.save(ar);
-		return ResponseEntity.status(HttpStatus.OK).body("Test" + id);
-	}
-
-	@PostMapping(value = "/employee/addpersonaltutorial", produces = "application/json")
-	public ResponseEntity<String> addPersonalTutorial(@RequestBody String string) {
-
-		return ResponseEntity.status(HttpStatus.OK).body("Test" + string);
-	}
-
 	@Autowired
 	private PersonRepo personRepo;
 	@Autowired
@@ -60,12 +42,12 @@ public class CrmController {
 		List<Person> pl = personRepo.findAll();
 		for (Person person : pl) {
 			for (PData pdata : person.getPData()) {
-				if (pdata.getPDatatype().getPDatatypeId() == pdatatypeRepo.findBy("password").getPDatatypeId()) {
+				if (pdata.getPDatatype().getId() == pdatatypeRepo.findBy("password").getId()) {
 					if (pdata.getValue().equals(password)) {
-						if (pdata.getPDatatype().getPDatatypeId() == pdatatypeRepo.findBy("username")
-								.getPDatatypeId()) {
+						if (pdata.getPDatatype().getId() == pdatatypeRepo.findBy("username")
+								.getId()) {
 							if (pdata.getValue().equals(username))
-								return ResponseEntity.status(HttpStatus.OK).body(Long.toString(pdata.getPDataId()));
+								return ResponseEntity.status(HttpStatus.OK).body(Long.toString(pdata.getId()));
 						}
 					}
 				}

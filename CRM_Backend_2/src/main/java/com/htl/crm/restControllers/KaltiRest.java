@@ -16,10 +16,9 @@ import com.htl.crm.domain.PData;
 import com.htl.crm.domain.PRole;
 import com.htl.crm.domain.Person;
 import com.htl.crm.domain.Receiver;
-import com.htl.crm.domain.Role;
+import com.htl.crm.domain.Relation;
 import com.htl.crm.domain.Template;
 import com.htl.crm.repositories.PersonRepo;
-import com.htl.crm.transferclasses.PersonObject;
 
 @RestController("/kaltusmaltusmaximus/")
 @EnableWebMvc
@@ -29,18 +28,18 @@ public class KaltiRest {
 	PersonRepo Persons;
 	
 	@GetMapping(value = "/test/{id}", produces = "application/json")
-	public ResponseEntity<PersonObject> GetPerson(@PathVariable int id){
+	public ResponseEntity<String> GetPerson(@PathVariable int id){
 		
-		Person p = Persons.findOne(id);
+	/*	Person p = Persons.findOne(id);
 		
-		long personId = p.getPersonId();
+		long personId = p.getId();
 		List<Addresshistorie> addresshistories = (List)p.getAddresshistories();
 		List<Event> events = (List)p.getEvents();
 		List<PRole> prole = (List)p.getPRole();
-		List<Role> role = (List)p.getRole();
+		List<Relation> relation = (List)p.getRelation();
 		List<PData> pdata = (List)p.getPData();
 		List<Receiver> receivers = (List)p.getReceivers();
-		List<Role> roles = (List)p.getRoles();
+		List<Relation> relations = (List)p.getRelation();
 		List<Template> templates = (List)p.getTemplates();
 
 		
@@ -49,13 +48,13 @@ public class KaltiRest {
 		po.setAddresshistories(addresshistories);
 		po.setEvents(events);
 		po.setPRole(prole);
-		po.setRole(role);
+		po.setRole(relation);
 		po.setPData(pdata);
 		po.setReceivers(receivers);
-		po.setRoles(roles);
+		po.setR(relations);
 		po.setTemplates(templates);
+		*/
 		
-		
-		return ResponseEntity.status(HttpStatus.OK).body(po);
+		return ResponseEntity.status(HttpStatus.OK).body(null);
 	}
 }

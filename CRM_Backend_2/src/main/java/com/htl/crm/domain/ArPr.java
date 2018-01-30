@@ -2,6 +2,7 @@ package com.htl.crm.domain;
 
 import java.io.Serializable;
 import javax.persistence.*;
+import java.math.BigDecimal;
 
 
 /**
@@ -15,20 +16,16 @@ public class ArPr implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@SequenceGenerator(name="AR_PR_ACESRIGTPROLEID_GENERATOR", sequenceName="AR_PR_SEQ")
+	@SequenceGenerator(name="AR_PR_ACESRIGTPROLEID_GENERATOR", sequenceName="AR_PR_ACES_RIGT_P_ROLE_ID_SEQ")
 	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="AR_PR_ACESRIGTPROLEID_GENERATOR")
-	@Column(name="ACES_RIGT_P_ROLE_ID")
+	@Column(name="ACES_RIGT_P_ROLE_ID", unique=true, nullable=false, precision=22)
 	private long acesRigtPRoleId;
 
-	//bi-directional many-to-one association to AccessRight
-	@ManyToOne
-	@JoinColumn(name="ACCESS_RIGHT_ID")
-	private AccessRight accessRight;
+	@Column(name="ACCESS_RIGHT_ID", nullable=false, precision=22)
+	private BigDecimal accessRightId;
 
-	//bi-directional many-to-one association to PRole
-	@ManyToOne
-	@JoinColumn(name="P_ROLE_ID")
-	private PRole PRole;
+	@Column(name="P_ROLE_ID", nullable=false, precision=22)
+	private BigDecimal pRoleId;
 
 	public ArPr() {
 	}
@@ -41,20 +38,20 @@ public class ArPr implements Serializable {
 		this.acesRigtPRoleId = acesRigtPRoleId;
 	}
 
-	public AccessRight getAccessRight() {
-		return this.accessRight;
+	public BigDecimal getAccessRightId() {
+		return this.accessRightId;
 	}
 
-	public void setAccessRight(AccessRight accessRight) {
-		this.accessRight = accessRight;
+	public void setAccessRightId(BigDecimal accessRightId) {
+		this.accessRightId = accessRightId;
 	}
 
-	public PRole getPRole() {
-		return this.PRole;
+	public BigDecimal getPRoleId() {
+		return this.pRoleId;
 	}
 
-	public void setPRole(PRole PRole) {
-		this.PRole = PRole;
+	public void setPRoleId(BigDecimal pRoleId) {
+		this.pRoleId = pRoleId;
 	}
 
 }

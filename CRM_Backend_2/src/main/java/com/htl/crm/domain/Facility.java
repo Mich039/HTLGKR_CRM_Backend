@@ -2,7 +2,7 @@ package com.htl.crm.domain;
 
 import java.io.Serializable;
 import javax.persistence.*;
-import java.util.Set;
+import java.util.List;
 
 
 /**
@@ -10,31 +10,33 @@ import java.util.Set;
  * 
  */
 @Entity
+@Table(name="FACILITY")
 @NamedQuery(name="Facility.findAll", query="SELECT f FROM Facility f")
 public class Facility implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@SequenceGenerator(name="FACILITY_FACILITYID_GENERATOR", sequenceName="FACILITY_SEQ")
-	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="FACILITY_FACILITYID_GENERATOR")
-	@Column(name="FACILITY_ID")
-	private long facilityId;
+	@SequenceGenerator(name="FACILITY_ID_GENERATOR", sequenceName="FACILITY_ID_SEQ")
+	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="FACILITY_ID_GENERATOR")
+	@Column(unique=true, nullable=false, precision=22)
+	private long id;
 
+	@Column(length=500)
 	private String name;
 
 	//bi-directional many-to-one association to Receiver
 	@OneToMany(mappedBy="facility")
-	private Set<Receiver> receivers;
+	private List<Receiver> receivers;
 
 	public Facility() {
 	}
 
-	public long getFacilityId() {
-		return this.facilityId;
+	public long getId() {
+		return this.id;
 	}
 
-	public void setFacilityId(long facilityId) {
-		this.facilityId = facilityId;
+	public void setId(long id) {
+		this.id = id;
 	}
 
 	public String getName() {
@@ -45,11 +47,11 @@ public class Facility implements Serializable {
 		this.name = name;
 	}
 
-	public Set<Receiver> getReceivers() {
+	public List<Receiver> getReceivers() {
 		return this.receivers;
 	}
 
-	public void setReceivers(Set<Receiver> receivers) {
+	public void setReceivers(List<Receiver> receivers) {
 		this.receivers = receivers;
 	}
 

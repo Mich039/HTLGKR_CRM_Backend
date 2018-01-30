@@ -2,7 +2,7 @@ package com.htl.crm.domain;
 
 import java.io.Serializable;
 import javax.persistence.*;
-import java.util.Set;
+import java.util.List;
 
 
 /**
@@ -16,27 +16,27 @@ public class AccessRight implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@SequenceGenerator(name="ACCESS_RIGHT_ACCESSRIGHTID_GENERATOR", sequenceName="ACCESS_RIGHT_SEQ")
-	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="ACCESS_RIGHT_ACCESSRIGHTID_GENERATOR")
-	@Column(name="ACCESS_RIGHT_ID")
-	private long accessRightId;
+	@SequenceGenerator(name="ACCESS_RIGHT_ID_GENERATOR", sequenceName="ACCESS_RIGHT_ID_SEQ")
+	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="ACCESS_RIGHT_ID_GENERATOR")
+	@Column(unique=true, nullable=false, precision=22)
+	private long id;
 
-	@Column(name="ACCESS_RIGHT")
+	@Column(name="ACCESS_RIGHT", length=500)
 	private String accessRight;
 
-	//bi-directional many-to-one association to ArPr
+	//bi-directional many-to-one association to AccessRightPRole
 	@OneToMany(mappedBy="accessRight")
-	private Set<ArPr> arPrs;
+	private List<AccessRightPRole> accessRightPRoles;
 
 	public AccessRight() {
 	}
 
-	public long getAccessRightId() {
-		return this.accessRightId;
+	public long getId() {
+		return this.id;
 	}
 
-	public void setAccessRightId(long accessRightId) {
-		this.accessRightId = accessRightId;
+	public void setId(long id) {
+		this.id = id;
 	}
 
 	public String getAccessRight() {
@@ -47,26 +47,26 @@ public class AccessRight implements Serializable {
 		this.accessRight = accessRight;
 	}
 
-	public Set<ArPr> getArPrs() {
-		return this.arPrs;
+	public List<AccessRightPRole> getAccessRightPRoles() {
+		return this.accessRightPRoles;
 	}
 
-	public void setArPrs(Set<ArPr> arPrs) {
-		this.arPrs = arPrs;
+	public void setAccessRightPRoles(List<AccessRightPRole> accessRightPRoles) {
+		this.accessRightPRoles = accessRightPRoles;
 	}
 
-	public ArPr addArPr(ArPr arPr) {
-		getArPrs().add(arPr);
-		arPr.setAccessRight(this);
+	public AccessRightPRole addAccessRightPRole(AccessRightPRole accessRightPRole) {
+		getAccessRightPRoles().add(accessRightPRole);
+		accessRightPRole.setAccessRight(this);
 
-		return arPr;
+		return accessRightPRole;
 	}
 
-	public ArPr removeArPr(ArPr arPr) {
-		getArPrs().remove(arPr);
-		arPr.setAccessRight(null);
+	public AccessRightPRole removeAccessRightPRole(AccessRightPRole accessRightPRole) {
+		getAccessRightPRoles().remove(accessRightPRole);
+		accessRightPRole.setAccessRight(null);
 
-		return arPr;
+		return accessRightPRole;
 	}
 
 }

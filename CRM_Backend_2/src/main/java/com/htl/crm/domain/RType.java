@@ -2,7 +2,7 @@ package com.htl.crm.domain;
 
 import java.io.Serializable;
 import javax.persistence.*;
-import java.util.Set;
+import java.util.List;
 
 
 /**
@@ -16,27 +16,27 @@ public class RType implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@SequenceGenerator(name="R_TYPE_RTYPEID_GENERATOR", sequenceName="R_TYPE_SEQ")
-	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="R_TYPE_RTYPEID_GENERATOR")
-	@Column(name="R_TYPE_ID")
-	private long rTypeId;
+	@SequenceGenerator(name="R_TYPE_ID_GENERATOR", sequenceName="R_TYPE_ID_SEQ")
+	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="R_TYPE_ID_GENERATOR")
+	@Column(unique=true, nullable=false, precision=22)
+	private long id;
 
-	@Column(name="\"TYPE\"")
+	@Column(name="\"TYPE\"", length=500)
 	private String type;
 
-	//bi-directional many-to-one association to Role
+	//bi-directional many-to-one association to Relation
 	@OneToMany(mappedBy="RType")
-	private Set<Role> roles;
+	private List<Relation> relations;
 
 	public RType() {
 	}
 
-	public long getRTypeId() {
-		return this.rTypeId;
+	public long getId() {
+		return this.id;
 	}
 
-	public void setRTypeId(long rTypeId) {
-		this.rTypeId = rTypeId;
+	public void setId(long id) {
+		this.id = id;
 	}
 
 	public String getType() {
@@ -47,26 +47,26 @@ public class RType implements Serializable {
 		this.type = type;
 	}
 
-	public Set<Role> getRoles() {
-		return this.roles;
+	public List<Relation> getRelations() {
+		return this.relations;
 	}
 
-	public void setRoles(Set<Role> roles) {
-		this.roles = roles;
+	public void setRelations(List<Relation> relations) {
+		this.relations = relations;
 	}
 
-	public Role addRole(Role role) {
-		getRoles().add(role);
-		role.setRType(this);
+	public Relation addRelation(Relation relation) {
+		getRelations().add(relation);
+		relation.setRType(this);
 
-		return role;
+		return relation;
 	}
 
-	public Role removeRole(Role role) {
-		getRoles().remove(role);
-		role.setRType(null);
+	public Relation removeRelation(Relation relation) {
+		getRelations().remove(relation);
+		relation.setRType(null);
 
-		return role;
+		return relation;
 	}
 
 }

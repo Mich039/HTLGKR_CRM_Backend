@@ -2,7 +2,7 @@ package com.htl.crm.domain;
 
 import java.io.Serializable;
 import javax.persistence.*;
-import java.util.Set;
+import java.util.List;
 
 
 /**
@@ -16,27 +16,27 @@ public class PDatatype implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@SequenceGenerator(name="P_DATATYPE_PDATATYPEID_GENERATOR", sequenceName="P_DATATYPE_SEQ")
-	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="P_DATATYPE_PDATATYPEID_GENERATOR")
-	@Column(name="P_DATATYPE_ID")
-	private long pDatatypeId;
+	@SequenceGenerator(name="P_DATATYPE_ID_GENERATOR", sequenceName="P_DATATYPE_ID_SEQ")
+	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="P_DATATYPE_ID_GENERATOR")
+	@Column(unique=true, nullable=false, precision=22)
+	private long id;
 
-	@Column(name="\"TYPE\"")
+	@Column(name="\"TYPE\"", length=500)
 	private String type;
 
 	//bi-directional many-to-one association to PData
 	@OneToMany(mappedBy="PDatatype")
-	private Set<PData> PData;
+	private List<PData> PData;
 
 	public PDatatype() {
 	}
 
-	public long getPDatatypeId() {
-		return this.pDatatypeId;
+	public long getId() {
+		return this.id;
 	}
 
-	public void setPDatatypeId(long pDatatypeId) {
-		this.pDatatypeId = pDatatypeId;
+	public void setId(long id) {
+		this.id = id;
 	}
 
 	public String getType() {
@@ -47,11 +47,11 @@ public class PDatatype implements Serializable {
 		this.type = type;
 	}
 
-	public Set<PData> getPData() {
+	public List<PData> getPData() {
 		return this.PData;
 	}
 
-	public void setPData(Set<PData> PData) {
+	public void setPData(List<PData> PData) {
 		this.PData = PData;
 	}
 

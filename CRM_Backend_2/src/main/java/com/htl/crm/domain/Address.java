@@ -4,7 +4,7 @@ import java.io.Serializable;
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.util.Date;
-import java.util.Set;
+import java.util.List;
 
 
 /**
@@ -12,57 +12,59 @@ import java.util.Set;
  * 
  */
 @Entity
+@Table(name="ADDRESS")
 @NamedQuery(name="Address.findAll", query="SELECT a FROM Address a")
 public class Address implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@SequenceGenerator(name="ADDRESS_ADDRESSID_GENERATOR", sequenceName="ADDRESS_SEQ")
-	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="ADDRESS_ADDRESSID_GENERATOR")
-	@Column(name="ADDRESS_ID")
-	private long addressId;
+	@SequenceGenerator(name="ADDRESS_ID_GENERATOR", sequenceName="ADDRESS_ID_SEQ")
+	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="ADDRESS_ID_GENERATOR")
+	@Column(unique=true, nullable=false, precision=22)
+	private long id;
 
 	@Temporal(TemporalType.DATE)
-	@Column(name="\"Date\"")
-	private Date date;
+	@Column(name="CREATION_DATE")
+	private Date creationDate;
 
-	@Column(name="DOOR_NUMBER")
+	@Column(name="DOOR_NUMBER", precision=22)
 	private BigDecimal doorNumber;
 
+	@Column(precision=22)
 	private BigDecimal postalcode;
 
-	@Column(name="STREET_ADDRESS")
+	@Column(name="STREET_ADDRESS", length=500)
 	private String streetAddress;
 
 	//bi-directional many-to-one association to Addresshistorie
 	@OneToMany(mappedBy="address")
-	private Set<Addresshistorie> addresshistories;
+	private List<Addresshistorie> addresshistories;
 
 	//bi-directional many-to-one association to Event
 	@OneToMany(mappedBy="address")
-	private Set<Event> events;
+	private List<Event> events;
 
-	//bi-directional many-to-one association to Role
+	//bi-directional many-to-one association to Relation
 	@OneToMany(mappedBy="address")
-	private Set<Role> roles;
+	private List<Relation> relations;
 
 	public Address() {
 	}
 
-	public long getAddressId() {
-		return this.addressId;
+	public long getId() {
+		return this.id;
 	}
 
-	public void setAddressId(long addressId) {
-		this.addressId = addressId;
+	public void setId(long id) {
+		this.id = id;
 	}
 
-	public Date getDate() {
-		return this.date;
+	public Date getCreationDate() {
+		return this.creationDate;
 	}
 
-	public void setDate(Date date) {
-		this.date = date;
+	public void setCreationDate(Date creationDate) {
+		this.creationDate = creationDate;
 	}
 
 	public BigDecimal getDoorNumber() {
@@ -89,11 +91,11 @@ public class Address implements Serializable {
 		this.streetAddress = streetAddress;
 	}
 
-	public Set<Addresshistorie> getAddresshistories() {
+	public List<Addresshistorie> getAddresshistories() {
 		return this.addresshistories;
 	}
 
-	public void setAddresshistories(Set<Addresshistorie> addresshistories) {
+	public void setAddresshistories(List<Addresshistorie> addresshistories) {
 		this.addresshistories = addresshistories;
 	}
 
@@ -111,11 +113,11 @@ public class Address implements Serializable {
 		return addresshistory;
 	}
 
-	public Set<Event> getEvents() {
+	public List<Event> getEvents() {
 		return this.events;
 	}
 
-	public void setEvents(Set<Event> events) {
+	public void setEvents(List<Event> events) {
 		this.events = events;
 	}
 
@@ -133,26 +135,26 @@ public class Address implements Serializable {
 		return event;
 	}
 
-	public Set<Role> getRoles() {
-		return this.roles;
+	public List<Relation> getRelations() {
+		return this.relations;
 	}
 
-	public void setRoles(Set<Role> roles) {
-		this.roles = roles;
+	public void setRelations(List<Relation> relations) {
+		this.relations = relations;
 	}
 
-	public Role addRole(Role role) {
-		getRoles().add(role);
-		role.setAddress(this);
+	public Relation addRelation(Relation relation) {
+		getRelations().add(relation);
+		relation.setAddress(this);
 
-		return role;
+		return relation;
 	}
 
-	public Role removeRole(Role role) {
-		getRoles().remove(role);
-		role.setAddress(null);
+	public Relation removeRelation(Relation relation) {
+		getRelations().remove(relation);
+		relation.setAddress(null);
 
-		return role;
+		return relation;
 	}
 
 }

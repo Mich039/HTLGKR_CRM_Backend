@@ -16,33 +16,33 @@ public class EventInfo implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@SequenceGenerator(name="EVENT_INFO_EVENTINFOID_GENERATOR", sequenceName="EVENT_INFO_SEQ")
-	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="EVENT_INFO_EVENTINFOID_GENERATOR")
-	@Column(name="EVENT_INFO_ID")
-	private long eventInfoId;
+	@SequenceGenerator(name="EVENT_INFO_ID_GENERATOR", sequenceName="EVENT_INFO_ID_SEQ")
+	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="EVENT_INFO_ID_GENERATOR")
+	@Column(unique=true, nullable=false, precision=22)
+	private long id;
 
-	@Column(name="\"VALUE\"")
+	@Column(name="\"VALUE\"", precision=22)
 	private BigDecimal value;
 
 	//bi-directional many-to-one association to Event
 	@ManyToOne
-	@JoinColumn(name="EVENT_ID")
+	@JoinColumn(name="EVENT_INFO_FK", nullable=false)
 	private Event event;
 
 	//bi-directional many-to-one association to EventInfoType
 	@ManyToOne
-	@JoinColumn(name="EVENT_INFO_TYPE_ID")
+	@JoinColumn(name="EVENT_INFO_TYPE_FK", nullable=false)
 	private EventInfoType eventInfoType;
 
 	public EventInfo() {
 	}
 
-	public long getEventInfoId() {
-		return this.eventInfoId;
+	public long getId() {
+		return this.id;
 	}
 
-	public void setEventInfoId(long eventInfoId) {
-		this.eventInfoId = eventInfoId;
+	public void setId(long id) {
+		this.id = id;
 	}
 
 	public BigDecimal getValue() {

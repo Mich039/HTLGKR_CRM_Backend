@@ -1,4 +1,4 @@
-buildscript {
+	buildscript {
 	ext {
 		springBootVersion = '1.5.9.RELEASE'
 	}
@@ -19,6 +19,7 @@ version = '0.0.1-SNAPSHOT'
 sourceCompatibility = 1.8
 
 repositories {
+	mavenLocal()
 	mavenCentral()
 }
 
@@ -26,6 +27,6 @@ repositories {
 dependencies {
 	compile('org.springframework.boot:spring-boot-starter-data-jpa')
 	compile('org.springframework.boot:spring-boot-starter-web')
-	compile("com.oracle:ojdbc7:12.1.0.2")
+	compile("com.oracle:ojdbc14:10.2.0.1.0")
 	testCompile('org.springframework.boot:spring-boot-starter-test')
 }

@@ -9,37 +9,41 @@ import javax.persistence.*;
  * 
  */
 @Entity
+@Table(name="RECEIVER")
 @NamedQuery(name="Receiver.findAll", query="SELECT r FROM Receiver r")
 public class Receiver implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@SequenceGenerator(name="RECEIVER_RECEIVERID_GENERATOR", sequenceName="RECEIVER_SEQ")
-	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="RECEIVER_RECEIVERID_GENERATOR")
-	@Column(name="RECEIVER_ID")
-	private long receiverId;
+	@SequenceGenerator(name="RECEIVER_ID_GENERATOR", sequenceName="RECEIVER_ID_SEQ")
+	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="RECEIVER_ID_GENERATOR")
+	@Column(unique=true, nullable=false, precision=22)
+	private long id;
 
 	//bi-directional many-to-one association to Facility
 	@ManyToOne
+	@JoinColumn(name="FACILITY_FK", nullable=false)
 	private Facility facility;
 
 	//bi-directional many-to-one association to Person
 	@ManyToOne
+	@JoinColumn(name="PERSON_FK", nullable=false)
 	private Person person;
 
 	//bi-directional many-to-one association to Template
 	@ManyToOne
+	@JoinColumn(name="TEMPLATE_FK", nullable=false)
 	private Template template;
 
 	public Receiver() {
 	}
 
-	public long getReceiverId() {
-		return this.receiverId;
+	public long getId() {
+		return this.id;
 	}
 
-	public void setReceiverId(long receiverId) {
-		this.receiverId = receiverId;
+	public void setId(long id) {
+		this.id = id;
 	}
 
 	public Facility getFacility() {

@@ -2,7 +2,7 @@ package com.htl.crm.domain;
 
 import java.io.Serializable;
 import javax.persistence.*;
-import java.util.Set;
+import java.util.List;
 
 
 /**
@@ -16,17 +16,17 @@ public class EventType implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@SequenceGenerator(name="EVENT_TYPE_EVENTTYPEID_GENERATOR", sequenceName="EVENT_TYPE_SEQ")
+	@SequenceGenerator(name="EVENT_TYPE_EVENTTYPEID_GENERATOR", sequenceName="EVENT_TYPE_EVENT_TYPE_ID_SEQ")
 	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="EVENT_TYPE_EVENTTYPEID_GENERATOR")
-	@Column(name="EVENT_TYPE_ID")
+	@Column(name="EVENT_TYPE_ID", unique=true, nullable=false, precision=22)
 	private long eventTypeId;
 
-	@Column(name="\"TYPE\"")
+	@Column(name="\"TYPE\"", length=500)
 	private String type;
 
 	//bi-directional many-to-one association to Event
 	@OneToMany(mappedBy="eventType")
-	private Set<Event> events;
+	private List<Event> events;
 
 	public EventType() {
 	}
@@ -47,11 +47,11 @@ public class EventType implements Serializable {
 		this.type = type;
 	}
 
-	public Set<Event> getEvents() {
+	public List<Event> getEvents() {
 		return this.events;
 	}
 
-	public void setEvents(Set<Event> events) {
+	public void setEvents(List<Event> events) {
 		this.events = events;
 	}
 

@@ -2,7 +2,7 @@ package com.htl.crm.domain;
 
 import java.io.Serializable;
 import javax.persistence.*;
-import java.util.Set;
+import java.util.List;
 
 
 /**
@@ -10,44 +10,46 @@ import java.util.Set;
  * 
  */
 @Entity
+@Table(name="TEMPLATE")
 @NamedQuery(name="Template.findAll", query="SELECT t FROM Template t")
 public class Template implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@SequenceGenerator(name="TEMPLATE_TEMPLATEID_GENERATOR", sequenceName="TEMPLATE_SEQ")
-	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="TEMPLATE_TEMPLATEID_GENERATOR")
-	@Column(name="TEMPLATE_ID")
-	private long templateId;
+	@SequenceGenerator(name="TEMPLATE_ID_GENERATOR", sequenceName="TEMPLATE_ID_SEQ")
+	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="TEMPLATE_ID_GENERATOR")
+	@Column(unique=true, nullable=false, precision=22)
+	private long id;
 
-	@Column(name="OCASSION_NAME")
+	@Column(name="OCASSION_NAME", length=500)
 	private String ocassionName;
 
 	//bi-directional many-to-one association to Bill
 	@OneToMany(mappedBy="template")
-	private Set<Bill> bills;
+	private List<Bill> bills;
 
 	//bi-directional many-to-one association to Invitation
 	@OneToMany(mappedBy="template")
-	private Set<Invitation> invitations;
+	private List<Invitation> invitations;
 
 	//bi-directional many-to-one association to Receiver
 	@OneToMany(mappedBy="template")
-	private Set<Receiver> receivers;
+	private List<Receiver> receivers;
 
 	//bi-directional many-to-one association to Person
 	@ManyToOne
+	@JoinColumn(name="PERSON_FK", nullable=false)
 	private Person person;
 
 	public Template() {
 	}
 
-	public long getTemplateId() {
-		return this.templateId;
+	public long getId() {
+		return this.id;
 	}
 
-	public void setTemplateId(long templateId) {
-		this.templateId = templateId;
+	public void setId(long id) {
+		this.id = id;
 	}
 
 	public String getOcassionName() {
@@ -58,11 +60,11 @@ public class Template implements Serializable {
 		this.ocassionName = ocassionName;
 	}
 
-	public Set<Bill> getBills() {
+	public List<Bill> getBills() {
 		return this.bills;
 	}
 
-	public void setBills(Set<Bill> bills) {
+	public void setBills(List<Bill> bills) {
 		this.bills = bills;
 	}
 
@@ -80,11 +82,11 @@ public class Template implements Serializable {
 		return bill;
 	}
 
-	public Set<Invitation> getInvitations() {
+	public List<Invitation> getInvitations() {
 		return this.invitations;
 	}
 
-	public void setInvitations(Set<Invitation> invitations) {
+	public void setInvitations(List<Invitation> invitations) {
 		this.invitations = invitations;
 	}
 
@@ -102,11 +104,11 @@ public class Template implements Serializable {
 		return invitation;
 	}
 
-	public Set<Receiver> getReceivers() {
+	public List<Receiver> getReceivers() {
 		return this.receivers;
 	}
 
-	public void setReceivers(Set<Receiver> receivers) {
+	public void setReceivers(List<Receiver> receivers) {
 		this.receivers = receivers;
 	}
 

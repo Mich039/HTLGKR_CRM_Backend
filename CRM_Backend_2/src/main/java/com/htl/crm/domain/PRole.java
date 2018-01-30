@@ -2,7 +2,7 @@ package com.htl.crm.domain;
 
 import java.io.Serializable;
 import javax.persistence.*;
-import java.util.Set;
+import java.util.List;
 
 
 /**
@@ -16,46 +16,68 @@ public class PRole implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@SequenceGenerator(name="P_ROLE_PROLEID_GENERATOR", sequenceName="P_ROLE_SEQ")
-	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="P_ROLE_PROLEID_GENERATOR")
-	@Column(name="P_ROLE_ID")
-	private long pRoleId;
+	@SequenceGenerator(name="P_ROLE_ID_GENERATOR", sequenceName="P_ROLE_ID_SEQ")
+	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="P_ROLE_ID_GENERATOR")
+	@Column(unique=true, nullable=false, precision=22)
+	private long id;
 
-	@Column(name="\"ROLE\"")
-	private String role;
+	@Column(name="ROLE_TEXT", length=500)
+	private String roleText;
+
+	//bi-directional many-to-one association to AccessRightPRole
+	@OneToMany(mappedBy="PRole")
+	private List<AccessRightPRole> accessRightPRoles;
 
 	//bi-directional many-to-one association to Person
 	@OneToMany(mappedBy="PRole")
-	private Set<Person> persons;
-
-	//bi-directional many-to-one association to ArPr
-	@OneToMany(mappedBy="PRole")
-	private Set<ArPr> arPrs;
+	private List<Person> persons;
 
 	public PRole() {
 	}
 
-	public long getPRoleId() {
-		return this.pRoleId;
+	public long getId() {
+		return this.id;
 	}
 
-	public void setPRoleId(long pRoleId) {
-		this.pRoleId = pRoleId;
+	public void setId(long id) {
+		this.id = id;
 	}
 
-	public String getRole() {
-		return this.role;
+	public String getRoleText() {
+		return this.roleText;
 	}
 
-	public void setRole(String role) {
-		this.role = role;
+	public void setRoleText(String roleText) {
+		this.roleText = roleText;
 	}
 
-	public Set<Person> getPersons() {
+	public List<AccessRightPRole> getAccessRightPRoles() {
+		return this.accessRightPRoles;
+	}
+
+	public void setAccessRightPRoles(List<AccessRightPRole> accessRightPRoles) {
+		this.accessRightPRoles = accessRightPRoles;
+	}
+
+	public AccessRightPRole addAccessRightPRole(AccessRightPRole accessRightPRole) {
+		getAccessRightPRoles().add(accessRightPRole);
+		accessRightPRole.setPRole(this);
+
+		return accessRightPRole;
+	}
+
+	public AccessRightPRole removeAccessRightPRole(AccessRightPRole accessRightPRole) {
+		getAccessRightPRoles().remove(accessRightPRole);
+		accessRightPRole.setPRole(null);
+
+		return accessRightPRole;
+	}
+
+	public List<Person> getPersons() {
 		return this.persons;
 	}
 
-	public void setPersons(Set<Person> persons) {
+	public void setPersons(List<Person> persons) {
 		this.persons = persons;
 	}
 
@@ -71,28 +93,6 @@ public class PRole implements Serializable {
 		person.setPRole(null);
 
 		return person;
-	}
-
-	public Set<ArPr> getArPrs() {
-		return this.arPrs;
-	}
-
-	public void setArPrs(Set<ArPr> arPrs) {
-		this.arPrs = arPrs;
-	}
-
-	public ArPr addArPr(ArPr arPr) {
-		getArPrs().add(arPr);
-		arPr.setPRole(this);
-
-		return arPr;
-	}
-
-	public ArPr removeArPr(ArPr arPr) {
-		getArPrs().remove(arPr);
-		arPr.setPRole(null);
-
-		return arPr;
 	}
 
 }

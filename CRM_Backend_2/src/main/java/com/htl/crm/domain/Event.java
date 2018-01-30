@@ -2,7 +2,7 @@ package com.htl.crm.domain;
 
 import java.io.Serializable;
 import javax.persistence.*;
-import java.util.Set;
+import java.util.List;
 
 
 /**
@@ -10,52 +10,56 @@ import java.util.Set;
  * 
  */
 @Entity
+@Table(name="EVENT")
 @NamedQuery(name="Event.findAll", query="SELECT e FROM Event e")
 public class Event implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@SequenceGenerator(name="EVENT_EVENTID_GENERATOR", sequenceName="EVENT_SEQ")
-	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="EVENT_EVENTID_GENERATOR")
-	@Column(name="EVENT_ID")
-	private long eventId;
+	@SequenceGenerator(name="EVENT_ID_GENERATOR", sequenceName="EVENT_ID_SEQ")
+	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="EVENT_ID_GENERATOR")
+	@Column(unique=true, nullable=false, precision=22)
+	private long id;
 
-	private String eventname;
+	@Column(name="EVENT_NAME", length=500)
+	private String eventName;
 
 	//bi-directional many-to-one association to Address
 	@ManyToOne
+	@JoinColumn(name="ADDRESS_FK", nullable=false)
 	private Address address;
 
 	//bi-directional many-to-one association to EventType
 	@ManyToOne
-	@JoinColumn(name="EVENT_TYPE_EVENT_TYPE_ID")
+	@JoinColumn(name="EVENT_TYPE_FK", nullable=false)
 	private EventType eventType;
 
 	//bi-directional many-to-one association to Person
 	@ManyToOne
+	@JoinColumn(name="PERSON_FK", nullable=false)
 	private Person person;
 
 	//bi-directional many-to-one association to EventInfo
 	@OneToMany(mappedBy="event")
-	private Set<EventInfo> eventInfos;
+	private List<EventInfo> eventInfos;
 
 	public Event() {
 	}
 
-	public long getEventId() {
-		return this.eventId;
+	public long getId() {
+		return this.id;
 	}
 
-	public void setEventId(long eventId) {
-		this.eventId = eventId;
+	public void setId(long id) {
+		this.id = id;
 	}
 
-	public String getEventname() {
-		return this.eventname;
+	public String getEventName() {
+		return this.eventName;
 	}
 
-	public void setEventname(String eventname) {
-		this.eventname = eventname;
+	public void setEventName(String eventName) {
+		this.eventName = eventName;
 	}
 
 	public Address getAddress() {
@@ -82,11 +86,11 @@ public class Event implements Serializable {
 		this.person = person;
 	}
 
-	public Set<EventInfo> getEventInfos() {
+	public List<EventInfo> getEventInfos() {
 		return this.eventInfos;
 	}
 
-	public void setEventInfos(Set<EventInfo> eventInfos) {
+	public void setEventInfos(List<EventInfo> eventInfos) {
 		this.eventInfos = eventInfos;
 	}
 
