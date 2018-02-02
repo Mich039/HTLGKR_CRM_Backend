@@ -157,4 +157,12 @@ public class Address implements Serializable {
 		return relation;
 	}
 
+	@Override
+	public String toString() {
+		return "Address [id=" + id + ", creationDate=" + creationDate + ", doorNumber=" + doorNumber + ", postalcode="
+				+ postalcode + ", streetAddress=" + streetAddress + "]";
+	}
+	
+	
+
 }

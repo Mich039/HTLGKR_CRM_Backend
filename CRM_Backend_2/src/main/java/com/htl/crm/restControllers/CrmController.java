@@ -1,6 +1,8 @@
 package com.htl.crm.restControllers;
 
 import java.io.IOException;
+import java.math.BigDecimal;
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -15,14 +17,18 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 import com.htl.crm.domain.AccessRight;
+import com.htl.crm.domain.Address;
 import com.htl.crm.domain.ArPr;
 import com.htl.crm.domain.PData;
 import com.htl.crm.domain.PDatatype;
 import com.htl.crm.domain.Person;
 import com.htl.crm.repositories.AccessRightRepo;
+import com.htl.crm.repositories.AddressRepo;
+import com.htl.crm.repositories.ArPrRepo;
 import com.htl.crm.repositories.PDatatypeRepo;
 import com.htl.crm.repositories.PersonRepo;
 import com.htl.crm.transferclasses.Contact;
+import com.htl.crm.transferclasses.PersonData;
 
 @RestController("/help/")
 @EnableWebMvc
@@ -35,7 +41,30 @@ public class CrmController {
 	private PersonRepo personRepo;
 	@Autowired
 	private PDatatypeRepo pdatatypeRepo;
+	@Autowired
+	private ArPrRepo arPrRepo;
+	@Autowired
+	private AddressRepo addressRepo;
 
+	@GetMapping(value="/putPers" , produces="application/json")
+	public ResponseEntity<Address> putPers(){
+		
+		Address a = new Address();
+		a.setCreationDate(new Date());
+		a.setDoorNumber(new BigDecimal(12));
+		a.setPostalcode(new BigDecimal(4672));
+		a.setStreetAddress("Voitberg");
+		
+		Address newa = addressRepo.save(a);
+		
+		
+		System.out.println(newa);
+
+		
+		return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(newa);
+	}
+		
+	
 	@PostMapping(value = "/login/logindata", produces = "application/json")
 	public ResponseEntity<String> logindata(@RequestBody String password, String username) {
 
@@ -53,10 +82,12 @@ public class CrmController {
 				}
 				return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Username or Password wrong");
 			}
-		}
-		return null;
+			}
+		return null;	
+	}
+		
 
-	};
+	
 
 	@GetMapping(value = "/getcontacts", produces = "application/json")
 	public ResponseEntity<LinkedList<Contact>> kontakte() {

@@ -1,9 +1,11 @@
 package com.htl.crm.repositories;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
 import com.htl.crm.domain.PData;
 
-public interface PDataRepo extends JpaRepository<PData, Integer> {
-	PData findOne(Integer id);
+@Repository
+public interface PDataRepo extends JpaRepository<PData, Long> {
+	PData findOne(Long id);
 }
