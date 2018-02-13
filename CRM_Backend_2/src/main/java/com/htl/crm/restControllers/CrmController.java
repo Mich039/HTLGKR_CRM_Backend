@@ -25,8 +25,10 @@ import com.htl.crm.domain.Person;
 import com.htl.crm.repositories.AccessRightRepo;
 import com.htl.crm.repositories.AddressRepo;
 import com.htl.crm.repositories.ArPrRepo;
+import com.htl.crm.repositories.PDataRepo;
 import com.htl.crm.repositories.PDatatypeRepo;
 import com.htl.crm.repositories.PersonRepo;
+import com.htl.crm.transferclasses.AddressTO;
 import com.htl.crm.transferclasses.Contact;
 import com.htl.crm.transferclasses.PersonData;
 
@@ -36,7 +38,6 @@ public class CrmController {
 
 	@Autowired
 	private AccessRightRepo accessRightRepo;
-
 	@Autowired
 	private PersonRepo personRepo;
 	@Autowired
@@ -45,36 +46,40 @@ public class CrmController {
 	private ArPrRepo arPrRepo;
 	@Autowired
 	private AddressRepo addressRepo;
-
+ @Autowired PDataRepo pDataRepo;
+	
 	@GetMapping(value="/putPers" , produces="application/json")
-	public ResponseEntity<Address> putPers(){
+	public ResponseEntity<AddressTO> putPers(){
 		
 		Address a = new Address();
 		a.setCreationDate(new Date());
 		a.setDoorNumber(new BigDecimal(12));
 		a.setPostalcode(new BigDecimal(4672));
 		a.setStreetAddress("Voitberg");
+		a.setCity("Bachmanning");
+		a.setCountry("Austria");
 		
 		Address newa = addressRepo.save(a);
 		
+		AddressTO ato = new AddressTO(newa.getId(),newa.getCity(),newa.getCreationDate(),newa.getDoorNumber(),newa.getStreetAddress());
 		
-		System.out.println(newa);
-
 		
-		return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(newa);
+		return ResponseEntity.status(HttpStatus.OK).body(ato);
 	}
 		
 	
 	@PostMapping(value = "/login/logindata", produces = "application/json")
 	public ResponseEntity<String> logindata(@RequestBody String password, String username) {
-
+		
 		List<Person> pl = personRepo.findAll();
+		
 		for (Person person : pl) {
+			person.getPDataFromType(password);
+			
 			for (PData pdata : person.getPData()) {
 				if (pdata.getPDatatype().getId() == pdatatypeRepo.findBy("password").getId()) {
 					if (pdata.getValue().equals(password)) {
-						if (pdata.getPDatatype().getId() == pdatatypeRepo.findBy("username")
-								.getId()) {
+						if (pdata.getPDatatype().getId() == pdatatypeRepo.findBy("username").getId()) {
 							if (pdata.getValue().equals(username))
 								return ResponseEntity.status(HttpStatus.OK).body(Long.toString(pdata.getId()));
 						}

@@ -14,4 +14,4 @@ spring:
   application:
     name: HTLCRM
 server:
-    port: 1234 
+    port: 1235 

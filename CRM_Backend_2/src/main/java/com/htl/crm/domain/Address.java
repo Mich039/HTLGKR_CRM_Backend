@@ -23,6 +23,12 @@ public class Address implements Serializable {
 	@Column(unique=true, nullable=false, precision=22)
 	private long id;
 
+	@Column(length=500)
+	private String city;
+
+	@Column(length=500)
+	private String country;
+
 	@Temporal(TemporalType.DATE)
 	@Column(name="CREATION_DATE")
 	private Date creationDate;
@@ -35,7 +41,7 @@ public class Address implements Serializable {
 
 	@Column(name="STREET_ADDRESS", length=500)
 	private String streetAddress;
-
+	
 	//bi-directional many-to-one association to Addresshistorie
 	@OneToMany(mappedBy="address")
 	private List<Addresshistorie> addresshistories;
@@ -57,6 +63,22 @@ public class Address implements Serializable {
 
 	public void setId(long id) {
 		this.id = id;
+	}
+
+	public String getCity() {
+		return this.city;
+	}
+
+	public void setCity(String city) {
+		this.city = city;
+	}
+
+	public String getCountry() {
+		return this.country;
+	}
+
+	public void setCountry(String country) {
+		this.country = country;
 	}
 
 	public Date getCreationDate() {
@@ -90,7 +112,7 @@ public class Address implements Serializable {
 	public void setStreetAddress(String streetAddress) {
 		this.streetAddress = streetAddress;
 	}
-
+	
 	public List<Addresshistorie> getAddresshistories() {
 		return this.addresshistories;
 	}
@@ -159,8 +181,9 @@ public class Address implements Serializable {
 
 	@Override
 	public String toString() {
-		return "Address [id=" + id + ", creationDate=" + creationDate + ", doorNumber=" + doorNumber + ", postalcode="
-				+ postalcode + ", streetAddress=" + streetAddress + "]";
+		return "Address [id=" + id + ", city=" + city + ", country=" + country + ", creationDate=" + creationDate
+				+ ", doorNumber=" + doorNumber + ", postalcode=" + postalcode + ", streetAddress=" + streetAddress
+				+ ", addresshistories=" + addresshistories + ", events=" + events + ", relations=" + relations + "]";
 	}
 	
 	
