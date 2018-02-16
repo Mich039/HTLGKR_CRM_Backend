@@ -8,6 +8,4 @@ import com.htl.crm.domain.Person;
 @Repository
 public interface PersonRepo extends JpaRepository<Person, Long> {
 	Person findOne(Long id);
-	
-	Person findBy
 }
