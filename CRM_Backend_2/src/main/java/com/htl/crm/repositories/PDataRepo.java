@@ -10,5 +10,4 @@ import com.htl.crm.domain.PData;
 @Repository
 public interface PDataRepo extends JpaRepository<PData, Long> {
 	PData findOne(Long id);
-
 }

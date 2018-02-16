@@ -75,7 +75,6 @@ public class CrmController {
 		
 		for (Person person : pl) {
 			person.getPDataFromType(password);
-			
 			for (PData pdata : person.getPData()) {
 				if (pdata.getPDatatype().getId() == pdatatypeRepo.findBy("password").getId()) {
 					if (pdata.getValue().equals(password)) {
@@ -85,10 +84,10 @@ public class CrmController {
 						}
 					}
 				}
-				return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Username or Password wrong");
+				return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
 			}
 			}
-		return null;	
+		return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
 	}
 		
 
