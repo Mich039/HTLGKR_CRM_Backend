@@ -58,6 +58,7 @@ public class SimonRestController {
 				if (list.size()==0) {
 					return null;
 				}
+				
 		return ResponseEntity.status(HttpStatus.OK).body("Test" + Person_id);
 	}
 	
@@ -82,6 +83,7 @@ public class SimonRestController {
 				return ResponseEntity.status(HttpStatus.OK).body(profile.toString());
 			}
 		}
+		
 		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("No person found!");
 	}
 }

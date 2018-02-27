@@ -34,5 +34,4 @@ public class Profile implements Serializable{
 	public void setTodolist(LinkedList<String> todolist) {
 		this.todolist = todolist;
 	}
-
 }
