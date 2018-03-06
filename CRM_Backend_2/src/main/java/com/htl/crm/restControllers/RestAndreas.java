@@ -16,6 +16,7 @@ import com.htl.crm.domain.Event;
 import com.htl.crm.domain.EventInfo;
 import com.htl.crm.domain.PData;
 import com.htl.crm.domain.PDatatype;
+import com.htl.crm.domain.PRole;
 import com.htl.crm.domain.Person;
 import com.htl.crm.repositories.AddressRepo;
 import com.htl.crm.repositories.EventRepo;
@@ -30,36 +31,38 @@ import com.htl.crm.transferclasses.PersonData;
 @RestController("/andi-stuff/")
 @EnableWebMvc
 public class RestAndreas {
-	
-	
-		@Autowired
-		PersonRepo Persons;
-		@Autowired
-		PDatatypeRepo PDataTypes;
-		@Autowired
-		AddressRepo Addresses;
-		@Autowired
-		PRoleRepo PRoles;
-		@Autowired
-		EventRepo Events;
-		@Autowired
-		EventTypeRepo EventTypes;
-		
-		@PostMapping(value = "/addcontact", produces = "application/json")
-		public ResponseEntity<String> addPersonalTutorial(@RequestBody AddContact contact) {
-			Person p = new Person();
-			p.setPRole(PRoles.findByRoleText(contact.getRole()));
-			for(PersonData persondata : contact.getPersonData()) {
-				PData pdata = new PData();
-				PDatatype pdatatype = PDataTypes.findByType(persondata.getDatatype());
-				pdata.setPDatatype(pdatatype);
-				pdata.setValue(persondata.getValue());
-				p.addPData(pdata);
-			}
-			
-			Person pCreated = Persons.save(p);
-			return ResponseEntity.status(HttpStatus.CREATED).body(null);
+
+	@Autowired
+	PersonRepo Persons;
+	@Autowired
+	PDatatypeRepo PDataTypes;
+	@Autowired
+	AddressRepo Addresses;
+	@Autowired
+	PRoleRepo PRoles;
+	@Autowired
+	EventRepo Events;
+	@Autowired
+	EventTypeRepo EventTypes;
+
+	@PostMapping(value = "/addcontact", produces = "application/json")
+	public ResponseEntity<String> addPersonalTutorial(@RequestBody AddContact contact) {
+		Person p = new Person();
+		PRole role = PRoles.findByRoleText(contact.getRole());
+		if (role == null) {
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Specified Role does not exist!");
 		}
+		p.setPRole(role);
+		for (PersonData persondata : contact.getPersonData()) {
+			PData pdata = new PData();
+			PDatatype pdatatype = PDataTypes.findByType(persondata.getDatatype());
+			pdata.setPDatatype(pdatatype);
+			pdata.setValue(persondata.getValue());
+			p.addPData(pdata);
+		}
+		Persons.save(p);
+		return ResponseEntity.status(HttpStatus.CREATED).body(null);
+	}
 		
 		@GetMapping(value="/getconversatoinsofcompany", produces = "application/json")
 		public ResponseEntity<LinkedList<Conversation>> getConversationsOfCompany(@PathVariable long id){
