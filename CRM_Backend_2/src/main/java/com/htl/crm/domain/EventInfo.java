@@ -21,8 +21,8 @@ public class EventInfo implements Serializable {
 	@Column(unique=true, nullable=false, precision=22)
 	private long id;
 
-	@Column(name="\"VALUE\"", precision=22)
-	private BigDecimal value;
+	@Column(name="\"VALUE\"", length=2000)
+	private String value;
 
 	//bi-directional many-to-one association to Event
 	@ManyToOne
@@ -45,11 +45,11 @@ public class EventInfo implements Serializable {
 		this.id = id;
 	}
 
-	public BigDecimal getValue() {
+	public String getValue() {
 		return this.value;
 	}
 
-	public void setValue(BigDecimal value) {
+	public void setValue(String value) {
 		this.value = value;
 	}
 

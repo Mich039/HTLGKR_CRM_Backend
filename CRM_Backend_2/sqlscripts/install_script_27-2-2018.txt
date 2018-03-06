@@ -199,7 +199,7 @@ ALTER TABLE Template ADD CONSTRAINT Template_PK PRIMARY KEY ( ID ) ;
 CREATE TABLE Todo
   (
     ID                NUMBER NOT NULL ,
-    Done              CHAR (1) NOT NULL ,
+    Done              NUMBER (1,0) NOT NULL ,
     Creation_DateTime DATE ,
     Text              VARCHAR2 (2000) ,
     Finished_DateTime DATE
