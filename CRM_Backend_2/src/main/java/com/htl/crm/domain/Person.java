@@ -2,6 +2,8 @@ package com.htl.crm.domain;
 
 import java.io.Serializable;
 import javax.persistence.*;
+
+import java.util.LinkedList;
 import java.util.List;
 
 
@@ -60,6 +62,11 @@ public class Person implements Serializable {
 	private List<Template> templates;
 
 	public Person() {
+		PData  = new LinkedList<PData>();
+		personTodos = new LinkedList<PersonTodo>();
+		receivers = new LinkedList<Receiver>();
+		relations = new LinkedList<>();
+		templates = new LinkedList<>();
 	}
 
 	public long getId() {

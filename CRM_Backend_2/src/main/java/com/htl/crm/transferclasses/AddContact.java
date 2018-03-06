@@ -5,6 +5,17 @@ import java.io.Serializable;
 public class AddContact implements Serializable{
 	
 	private PersonData[] personData;
+	private String role;
+	
+	
+
+	public String getRole() {
+		return role;
+	}
+
+	public void setRole(String role) {
+		this.role = role;
+	}
 
 	public PersonData[] getPersonData() {
 		return personData;
