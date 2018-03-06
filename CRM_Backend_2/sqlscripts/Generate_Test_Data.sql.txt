@@ -144,10 +144,14 @@ INSERT INTO FACILITY VALUES			(7,'x-tention Informationstechnologie GmbH');
 INSERT INTO EVENT VALUES				(1,'Karrieretag',1,2,3);
 INSERT INTO EVENT VALUES				(2,'Herbstfest',2,1,3);
 INSERT INTO EVENT VALUES				(3,'Karrieretag',1,4,1);
+INSERT INTO EVENT VALUES				(4,'Gesrpaech mit HugoHannsGMBH',4,4,1);
 
 --Tabelle EVENT_INFO		
-INSERT INTO EVENT_INFO VALUES			(1,'200',1,1);
-INSERT INTO EVENT_INFO VALUES			(2,'Greiner',3,4);
+INSERT INTO EVENT_INFO VALUES			(1,'200',1,4);
+INSERT INTO EVENT_INFO VALUES			(2,'Greiner',3,5);
+INSERT INTO EVENT_INFO VALUES			(3,'Hugo Hanns',4,3);
+INSERT INTO EVENT_INFO VALUES			(4,'Gesrpaech wegen Partner Firma fuer 4b Klasse',4,4);
+INSERT INTO EVENT_INFO VALUES			(5,'5.8.2015 13:45',4,1);
 
 --Tabelle TEMPLATE
 INSERT INTO TEMPLATE VALUES 			(1,'Elternsprechtag',1); 
