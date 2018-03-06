@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 import com.htl.crm.domain.Event;
+import com.htl.crm.domain.EventInfo;
 import com.htl.crm.domain.PData;
 import com.htl.crm.domain.PDatatype;
 import com.htl.crm.domain.Person;
@@ -60,18 +61,22 @@ public class RestAndreas {
 			return ResponseEntity.status(HttpStatus.CREATED).body(null);
 		}
 		
-//		@GetMapping(value="/getconversatoinsofcompany", produces = "application/json")
-//		public ResponseEntity<String> getConversationsOfCompany(@PathVariable long id){
-//			Person p = Persons.findOne(id);
-//			
-//			LinkedList<Event> events = (LinkedList<Event>) Events.findByPerson(p);
-//			LinkedList<Conversation> convs = new LinkedList<>();
-//			for(Event e : events) {
-//				if(e.getEventType().getEventTypeId() == EventTypes.findByType("company_conversation").getEventTypeId())
-//					e.EventInfos();
-//					Conversation conv = new Conversation(e.Event, person_company, person_school, conversation_content)
-//			}
-//			return ResponseEntity.status(HttpStatus.OK).body(convs);
-//			
-//		}
+		@GetMapping(value="/getconversatoinsofcompany", produces = "application/json")
+		public ResponseEntity<LinkedList<Conversation>> getConversationsOfCompany(@PathVariable long id){
+			Person p = Persons.findOne(id);
+			
+			LinkedList<Event> events = (LinkedList<Event>) Events.findByPerson(p);
+			LinkedList<Conversation> convs = new LinkedList<>();
+			for(Event e : events) {
+				if(e.getEventType().getEventTypeId() == EventTypes.findByType("company_conversation").getEventTypeId())
+					convs.add(new Conversation(e.getEventInfoByType("start_datetime").getValue(),
+								e.getEventInfoByType("company_person").getValue(),
+								e.getPerson().getPDataFromType("first_name")+" "+e.getPerson().getPDataFromType("last_name") , 
+								e.getEventInfoByType("conversatoin_content").getValue()
+								)
+							);
+			}
+			return ResponseEntity.status(HttpStatus.OK).body(convs);
+			
+		}
 }
