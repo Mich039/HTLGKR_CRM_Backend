@@ -5,6 +5,7 @@ import java.util.LinkedList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -20,6 +21,7 @@ import com.htl.crm.domain.Person;
 import com.htl.crm.repositories.AddressRepo;
 import com.htl.crm.repositories.EventRepo;
 import com.htl.crm.repositories.EventTypeRepo;
+import com.htl.crm.repositories.PDataRepo;
 import com.htl.crm.repositories.PDatatypeRepo;
 import com.htl.crm.repositories.PRoleRepo;
 import com.htl.crm.repositories.PersonRepo;
@@ -32,18 +34,21 @@ import com.htl.crm.transferclasses.PersonData;
 public class RestAndreas {
 
 	@Autowired
-	PersonRepo Persons;
+	private PersonRepo Persons;
 	@Autowired
-	PDatatypeRepo PDataTypes;
+	private	PDatatypeRepo PDataTypes;
 	@Autowired
-	AddressRepo Addresses;
+	private	AddressRepo Addresses;
 	@Autowired
-	PRoleRepo PRoles;
+	private	PRoleRepo PRoles;
 	@Autowired
-	EventRepo Events;
+	private	EventRepo Events;
 	@Autowired
-	EventTypeRepo EventTypes;
+	private	EventTypeRepo EventTypes;
+	@Autowired
+	private	PDataRepo pDataRepo;
 
+	@Transactional
 	@PostMapping(value = "/addcontact", produces = "application/json")
 	public ResponseEntity<String> addPersonalTutorial(@RequestBody AddContact contact) {
 		Person p = new Person();
@@ -52,15 +57,20 @@ public class RestAndreas {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Specified Role does not exist!");
 		}
 		p.setPRole(role);
+		Person person = Persons.save(p);
 		for (PersonData persondata : contact.getPersonData()) {
 			PData pdata = new PData();
 			PDatatype pdatatype = PDataTypes.findByType(persondata.getDatatype());
+			if (pdatatype == null) {
+				return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Specified PDataType does not exist!");
+			}
 			pdata.setPDatatype(pdatatype);
+			pdata.setPerson(person);
 			pdata.setValue(persondata.getValue());
-			p.addPData(pdata);
+			p.addPData(pDataRepo.save(pdata));
 		}
 
-		Persons.save(p);
+	
 		return ResponseEntity.status(HttpStatus.CREATED).body(null);
 	}
 
