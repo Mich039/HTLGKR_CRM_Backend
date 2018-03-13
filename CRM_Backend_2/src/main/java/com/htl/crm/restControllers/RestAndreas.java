@@ -35,7 +35,7 @@ public class RestAndreas {
 			Person p = new Person();
 			for(PersonData persondata : contact.getPersonData()) {
 				PData pdata = new PData();
-				PDatatype pdatatype = PDataTypes.findBy(persondata.getDatatype());
+				PDatatype pdatatype = PDataTypes.findByType(persondata.getDatatype());
 				pdata.setPDatatype(pdatatype);
 				pdata.setValue(persondata.getValue());
 				p.addPData(pdata);
