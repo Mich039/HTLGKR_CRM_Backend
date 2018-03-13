@@ -15,7 +15,7 @@ public class Contact implements Serializable{
 		
 	}
 
-	
+		
 
 	public Contact(String firstname, String lastname, String phonenumber, String email, String adresse) {
 		super();
