@@ -8,4 +8,5 @@ import com.htl.crm.domain.PRole;
 @Repository
 public interface PRoleRepo extends JpaRepository<PRole, Long> {
 	PRole findOne(Long id);
+	PRole findByRoleText(String text);
 }

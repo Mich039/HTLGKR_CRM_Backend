@@ -8,4 +8,5 @@ import com.htl.crm.domain.EventType;
 @Repository
 public interface EventTypeRepo extends JpaRepository<EventType, Long> {
 	EventType findOne(Long id);
+	EventType findByType(String type);
 }

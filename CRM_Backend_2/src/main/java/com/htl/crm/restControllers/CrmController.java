@@ -30,7 +30,9 @@ import com.htl.crm.repositories.PDatatypeRepo;
 import com.htl.crm.repositories.PersonRepo;
 import com.htl.crm.transferclasses.AddressTO;
 import com.htl.crm.transferclasses.Contact;
+import com.htl.crm.transferclasses.ContactlistTO;
 import com.htl.crm.transferclasses.PersonData;
+import com.htl.crm.transferclasses.PostLogin;
 
 @RestController("/help/")
 @EnableWebMvc
@@ -69,22 +71,33 @@ public class CrmController {
 		
 	
 	@PostMapping(value = "/login/logindata", produces = "application/json")
-	public ResponseEntity<String> logindata(@RequestBody String password, String username) {
+	public ResponseEntity<String> logindata(@RequestBody PostLogin data) {
 		
 		List<Person> pl = personRepo.findAll();
 		
 		for (Person person : pl) {
-			person.getPDataFromType(password);
+			//person.getPDataFromType(data.getPassword());
+			boolean passwordOK=false;
+			boolean usernameOK=false;
+			
 			for (PData pdata : person.getPData()) {
-				if (pdata.getPDatatype().getId() == pdatatypeRepo.findBy("password").getId()) {
-					if (pdata.getValue().equals(password)) {
-						if (pdata.getPDatatype().getId() == pdatatypeRepo.findBy("username").getId()) {
-							if (pdata.getValue().equals(username))
-								return ResponseEntity.status(HttpStatus.OK).body(Long.toString(pdata.getId()));
-						}
-					}
+				long pdataID=pdata.getPDatatype().getId();
+				long pdataRepoPasswordID=pdatatypeRepo.findByType("password").getId();
+				long pdataRepoUsernameID=pdatatypeRepo.findByType("username").getId();
+				String pdataValue=pdata.getValue();
+				
+				if (pdataID==pdataRepoPasswordID&&pdataValue.equals(data.getPassword())) {
+					passwordOK=true;
 				}
-				return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+				
+				if (pdataID==pdataRepoUsernameID&&pdataValue.equals(data.getUsername())) {
+					usernameOK=true;
+				}
+				
+				if(usernameOK&&passwordOK) {
+					return ResponseEntity.status(HttpStatus.OK).body(Long.toString(pdata.getId()));
+				}
+				//return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
 			}
 			}
 		return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
@@ -106,6 +119,9 @@ public class CrmController {
 					c.setEmail(person.getPDataFromType("e-mail").getValue());
 					c.setAdresse(person.getPDataFromType("address").getValue());
 					contactList.add(c);
+					ContactlistTO contactlistTO = new ContactlistTO();
+					contactlistTO.setContactlist(contactList);
+					
 				}
 		}
 		return ResponseEntity.status(HttpStatus.OK).body(contactList);
