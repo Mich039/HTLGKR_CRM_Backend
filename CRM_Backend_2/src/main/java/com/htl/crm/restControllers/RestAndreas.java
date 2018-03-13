@@ -35,6 +35,9 @@ import com.htl.crm.transferclasses.PersonData;
 @EnableWebMvc
 public class RestAndreas {
 
+	
+		
+		
 	@Autowired
 	private PersonRepo Persons;
 	@Autowired
@@ -57,6 +60,7 @@ public class RestAndreas {
 		PRole role = PRoles.findByRoleText(contact.getRole());
 		if (role == null) {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Specified Role does not exist!");
+
 		}
 		p.setPRole(role);
 		Person person = Persons.save(p);
@@ -77,9 +81,10 @@ public class RestAndreas {
 		return ResponseEntity.status(HttpStatus.CREATED).body(null);
 	}
 		
-		@GetMapping(value="/getconversatoinsofcompany/{id}", produces = "application/json")
+
+		@GetMapping(value="/getconversatoinsofcompany", produces = "application/json")
 		public ResponseEntity<ArrayList<Conversation>> getConversationsOfCompany(@PathVariable long id){
-			Person p = Persons.findByid(id);
+			Person p = Persons.findOne(id);
 			
 			ArrayList<Event> events = (ArrayList<Event>) Events.findByPerson(p);
 			ArrayList<Conversation> convs = new ArrayList<>();

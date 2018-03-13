@@ -3,31 +3,31 @@ package com.htl.crm.transferclasses;
 import java.io.Serializable;
 
 public class PostLogin implements Serializable{
-	private String benutzername;
-	private String passwort;
+	private String username;
+	private String password;
 	
 	public PostLogin() {
 		
 	}
 	
-	public PostLogin(String benutzername,String passwort) {
-		this.benutzername=benutzername;
-		this.passwort=passwort;
+	public PostLogin(String username,String passwort) {
+		this.username=username;
+		this.password=passwort;
 	}
 	
-	public String getBenutzername() {
-		return benutzername;
+	public String getUsername() {
+		return username;
 	}
 	
-	public void setBenutzername(String benutzername) {
-		this.benutzername = benutzername;
+	public void setUsername(String username) {
+		this.username = username;
 	}
 	
-	public String getPasswort() {
-		return passwort;
+	public String getPassword() {
+		return password;
 	}
 	
-	public void setPasswort(String passwort) {
-		this.passwort = passwort;
+	public void setPassword(String password) {
+		this.password = password;
 	}
 }

@@ -71,7 +71,7 @@ public class CrmController {
 		
 	
 	@PostMapping(value = "/login/logindata", produces = "application/json")
-	public ResponseEntity<String> logindata(@RequestBody String password, String username) {
+	public ResponseEntity<String> logindata(@RequestBody PostLogin data) {
 		
 		List<Person> pl = personRepo.findAll();
 		
@@ -85,24 +85,6 @@ public class CrmController {
 				long pdataRepoPasswordID=pdatatypeRepo.findByType("password").getId();
 				long pdataRepoUsernameID=pdatatypeRepo.findByType("username").getId();
 				String pdataValue=pdata.getValue();
-				
-				/*if (pdataID==pdataRepoPasswordID) {
-					if (pdata.getValue().equals(data.getPassword())) {
-						if (pdata.getPDatatype().getId() == pdataRepoUsernameID) {
-							if (pdataValue.equals(data.getUsername()))
-				long pdataID=pdata.getPDatatype().getId();
-				long pdataRepoPasswordID=pdatatypeRepo.findByType("password").getId();
-				long pdataRepoUsernameID=pdatatypeRepo.findByType("username").getId();
-				String pdataValue=pdata.getValue();
-				
-				/*if (pdataID==pdataRepoPasswordID) {
-					if (pdata.getValue().equals(data.getPassword())) {
-						if (pdata.getPDatatype().getId() == pdataRepoUsernameID) {
-							if (pdataValue.equals(data.getUsername()))
-								return ResponseEntity.status(HttpStatus.OK).body(Long.toString(pdata.getId()));
-						}
-					}
-				}*/
 				
 				if (pdataID==pdataRepoPasswordID&&pdataValue.equals(data.getPassword())) {
 					passwordOK=true;
