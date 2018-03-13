@@ -3,7 +3,7 @@ package com.htl.crm.transferclasses;
 import java.io.Serializable;
 import java.util.Date;
 
-public class Conversation implements Serializable{
+public class ConversationTO implements Serializable{
 	
 	private String time_added;
 	private String person_company;
@@ -39,7 +39,7 @@ public class Conversation implements Serializable{
 	 * @param person_school
 	 * @param conversation_content
 	 */
-	public Conversation(String time_added, String person_company, String person_school, String conversation_content) {
+	public ConversationTO(String time_added, String person_company, String person_school, String conversation_content) {
 		super();
 		this.time_added = time_added;
 		this.person_company = person_company;
@@ -48,7 +48,7 @@ public class Conversation implements Serializable{
 	}
 
 	
-	public Conversation() {
+	public ConversationTO() {
 		super();
 	}
 	
