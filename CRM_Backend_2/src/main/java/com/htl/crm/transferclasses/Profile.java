@@ -6,7 +6,7 @@ import java.util.LinkedList;
 public class Profile implements Serializable{
 	private String firstname;
 	private String lastname;
-	private LinkedList<String> todolist;
+	private LinkedList<TodoTrClass> todolist;
 	
 	public Profile() {
 		// TODO Auto-generated constructor stub
@@ -20,7 +20,7 @@ public class Profile implements Serializable{
 		return lastname;
 	}
 	
-	public LinkedList<String> getTodolist() {
+	public LinkedList<TodoTrClass> getTodolist() {
 		return todolist;
 	}
 	
@@ -31,7 +31,7 @@ public class Profile implements Serializable{
 	public void setLastname(String lastname) {
 		this.lastname = lastname;
 	}
-	public void setTodolist(LinkedList<String> todolist) {
+	public void setTodolist(LinkedList<TodoTrClass> todolist) {
 		this.todolist = todolist;
 	}
 }
