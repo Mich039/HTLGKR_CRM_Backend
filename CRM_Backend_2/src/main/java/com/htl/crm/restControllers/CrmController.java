@@ -32,6 +32,7 @@ import com.htl.crm.transferclasses.AddressTO;
 import com.htl.crm.transferclasses.Contact;
 import com.htl.crm.transferclasses.ContactlistTO;
 import com.htl.crm.transferclasses.PersonData;
+import com.htl.crm.transferclasses.PostLogin;
 
 @RestController("/help/")
 @EnableWebMvc
@@ -70,22 +71,42 @@ public class CrmController {
 		
 	
 	@PostMapping(value = "/login/logindata", produces = "application/json")
-	public ResponseEntity<String> logindata(@RequestBody String password, String username) {
+	public ResponseEntity<String> logindata(@RequestBody PostLogin data) {
 		
 		List<Person> pl = personRepo.findAll();
 		
 		for (Person person : pl) {
-			person.getPDataFromType(password);
+			//person.getPDataFromType(data.getPassword());
+			boolean passwordOK=false;
+			boolean usernameOK=false;
+			
 			for (PData pdata : person.getPData()) {
-				if (pdata.getPDatatype().getId() == pdatatypeRepo.findBy("password").getId()) {
-					if (pdata.getValue().equals(password)) {
-						if (pdata.getPDatatype().getId() == pdatatypeRepo.findBy("username").getId()) {
-							if (pdata.getValue().equals(username))
+				long pdataID=pdata.getPDatatype().getId();
+				long pdataRepoPasswordID=pdatatypeRepo.findByType("password").getId();
+				long pdataRepoUsernameID=pdatatypeRepo.findByType("username").getId();
+				String pdataValue=pdata.getValue();
+				
+				/*if (pdataID==pdataRepoPasswordID) {
+					if (pdata.getValue().equals(data.getPassword())) {
+						if (pdata.getPDatatype().getId() == pdataRepoUsernameID) {
+							if (pdataValue.equals(data.getUsername()))
 								return ResponseEntity.status(HttpStatus.OK).body(Long.toString(pdata.getId()));
 						}
 					}
+				}*/
+				
+				if (pdataID==pdataRepoPasswordID&&pdataValue.equals(data.getPassword())) {
+					passwordOK=true;
 				}
-				return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+				
+				if (pdataID==pdataRepoUsernameID&&pdataValue.equals(data.getUsername())) {
+					usernameOK=true;
+				}
+				
+				if(usernameOK&&passwordOK) {
+					return ResponseEntity.status(HttpStatus.OK).body(Long.toString(pdata.getId()));
+				}
+				//return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
 			}
 			}
 		return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);

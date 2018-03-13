@@ -8,5 +8,5 @@ import com.htl.crm.domain.PDatatype;
 @Repository
 public interface PDatatypeRepo extends JpaRepository<PDatatype, Long> {
 	PDatatype findOne(Long id);
-	PDatatype findBy(String type);
+	PDatatype findByType(String type);
 }

@@ -18,7 +18,7 @@ public class EventType implements Serializable {
 	@Id
 	@SequenceGenerator(name="EVENT_TYPE_EVENTTYPEID_GENERATOR", sequenceName="EVENT_TYPE_EVENT_TYPE_ID_SEQ")
 	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="EVENT_TYPE_EVENTTYPEID_GENERATOR")
-	@Column(name="EVENT_TYPE_ID", unique=true, nullable=false, precision=22)
+	@Column(name="ID", unique=true, nullable=false, precision=22)
 	private long eventTypeId;
 
 	@Column(name="\"TYPE\"", length=500)

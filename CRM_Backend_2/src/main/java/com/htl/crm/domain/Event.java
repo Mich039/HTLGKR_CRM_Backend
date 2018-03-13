@@ -107,5 +107,14 @@ public class Event implements Serializable {
 
 		return eventInfo;
 	}
+	
+	public EventInfo getEventInfoByType(String eit) {
+		for(EventInfo ei : getEventInfos()) {
+			if(ei.getEventInfoType().getType().toUpperCase().equals(eit.toUpperCase()))
+				return ei;
+		}
+		return null;
+		
+	}
 
 }
