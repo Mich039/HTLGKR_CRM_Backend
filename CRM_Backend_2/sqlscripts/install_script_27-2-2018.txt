@@ -4,7 +4,7 @@
 --   type:      Oracle Database 11g
 
 
-
+DROP TABLE Event_Person CASCADE CONSTRAINTS;
 
 DROP TABLE Access_Right CASCADE CONSTRAINTS ;
 
@@ -206,6 +206,19 @@ CREATE TABLE Todo
   ) ;
 ALTER TABLE Todo ADD CONSTRAINT Todo_PK PRIMARY KEY ( ID ) ;
 
+CREATE TABLE Event_Person
+  (
+    ID        NUMBER NOT NULL ,
+    Person_FK NUMBER NOT NULL ,
+    Event_FK  NUMBER NOT NULL
+  ) ;
+ALTER TABLE Event_Person ADD CONSTRAINT Event_Person_PK PRIMARY KEY ( ID ) ;
+
+ALTER TABLE Event_Person ADD CONSTRAINT Event_Person_Event_FK FOREIGN KEY ( Event_FK ) REFERENCES Event ( ID ) ;
+
+ALTER TABLE Event_Person ADD CONSTRAINT Event_Person_Person_FK FOREIGN KEY ( Person_FK ) REFERENCES Person ( ID ) ON
+DELETE CASCADE ;
+
 ALTER TABLE Access_Right_P_Role ADD CONSTRAINT Access_Right_P_Role_FK FOREIGN KEY ( P_Role_FK ) REFERENCES P_Role ( ID ) ON DELETE CASCADE ENABLE;
 
 ALTER TABLE Addresshistorie ADD CONSTRAINT Addresshistorie_Address_FK FOREIGN KEY ( Address_FK ) REFERENCES Address ( ID ) ON DELETE CASCADE ENABLE;
@@ -257,9 +270,9 @@ ALTER TABLE Template ADD CONSTRAINT Template_Person_FK FOREIGN KEY ( Person_FK )
 
 -- Oracle SQL Developer Data Modeler Summary Report: 
 -- 
--- CREATE TABLE                            21
+-- CREATE TABLE                            22
 -- CREATE INDEX                             0
--- ALTER TABLE                             45
+-- ALTER TABLE                             46
 -- CREATE VIEW                              0
 -- CREATE PACKAGE                           0
 -- CREATE PACKAGE BODY                      0
