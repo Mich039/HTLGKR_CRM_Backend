@@ -28,6 +28,7 @@ import com.htl.crm.transferclasses.Contact_person;
 import com.htl.crm.transferclasses.Profile;
 import com.htl.crm.transferclasses.TodoTrClass;
 
+@RestController
 @EnableWebMvc
 public class SimonRestController {
 	@Autowired
@@ -53,11 +54,11 @@ public class SimonRestController {
 	private PersonRepo personRepo;
 	
 	@GetMapping(value = "/profile/{id}", produces = "application/json")
-	public ResponseEntity<String> profile(@PathVariable int id) {
+	public ResponseEntity<Profile> profile(@PathVariable int id) {
 		Profile profile = new Profile();
-		Person person = personRepo.findOne((long)id);
+		Person person = personRepo.findByid((long)id);
 		if(person == null)
-			ResponseEntity.status(HttpStatus.BAD_REQUEST).body("No person found!");
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
 		profile.setFirstname(person.getPDataFromType("firstname").getValue());
 		profile.setLastname(person.getPDataFromType("lastname").getValue());
 		for( PersonTodo todo : person.getPersonTodos()) {
@@ -69,7 +70,7 @@ public class SimonRestController {
 					todo.getTodo().getText()));
 		}
 		
-		return ResponseEntity.status(HttpStatus.OK).body(profile.toString());
+		return ResponseEntity.status(HttpStatus.OK).body(profile);
 	}
 	
 	/*@GetMapping(value = "/contact/{id}", produces = "application/json")
