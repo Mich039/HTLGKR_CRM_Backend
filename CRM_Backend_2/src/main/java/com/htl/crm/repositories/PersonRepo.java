@@ -8,6 +8,7 @@ import com.htl.crm.domain.Person;
 @Repository
 public interface PersonRepo extends JpaRepository<Person, Long> {
 	Person findOne(Long id);
+	Person findByid(Long id);
 //	"Select person.id from PRE_5M.PERSON person \r\n" + 
 //	"Join PRE_5M.P_DATA pdatapassword ON pdatapassword.PERSON_FK = person.ID \r\n" + 
 //	"JOIN PRE_5M.P_DATATYPE pdatatypepassword On pdatapassword.P_DATATYPE_FK = pdatatypepassword.ID\r\n" + 

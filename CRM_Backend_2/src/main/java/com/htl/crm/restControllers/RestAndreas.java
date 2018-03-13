@@ -1,5 +1,6 @@
 package com.htl.crm.restControllers;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +31,7 @@ import com.htl.crm.transferclasses.AddContact;
 import com.htl.crm.transferclasses.Conversation;
 import com.htl.crm.transferclasses.PersonData;
 
+@RestController
 @EnableWebMvc
 public class RestAndreas {
 
@@ -75,12 +77,12 @@ public class RestAndreas {
 		return ResponseEntity.status(HttpStatus.CREATED).body(null);
 	}
 		
-		@GetMapping(value="/getconversatoinsofcompany", produces = "application/json")
-		public ResponseEntity<LinkedList<Conversation>> getConversationsOfCompany(@PathVariable long id){
-			Person p = Persons.findOne(id);
+		@GetMapping(value="/getconversatoinsofcompany/{id}", produces = "application/json")
+		public ResponseEntity<ArrayList<Conversation>> getConversationsOfCompany(@PathVariable long id){
+			Person p = Persons.findByid(id);
 			
-			LinkedList<Event> events = (LinkedList<Event>) Events.findByPerson(p);
-			LinkedList<Conversation> convs = new LinkedList<>();
+			ArrayList<Event> events = (ArrayList<Event>) Events.findByPerson(p);
+			ArrayList<Conversation> convs = new ArrayList<>();
 			for(Event e : events) {
 				if(e.getEventType().getEventTypeId() == EventTypes.findByType("company_conversation").getEventTypeId())
 					convs.add(new Conversation(e.getEventInfoByType("start_datetime").getValue(),

@@ -145,6 +145,9 @@ INSERT INTO EVENT VALUES				(1,'Karrieretag',1,2,3);
 INSERT INTO EVENT VALUES				(2,'Herbstfest',2,1,3);
 INSERT INTO EVENT VALUES				(3,'Karrieretag',1,4,1);
 INSERT INTO EVENT VALUES				(4,'Gesrpaech mit HugoHannsGMBH',4,4,1);
+INSERT INTO EVENT VALUES				(5,'Gesrpaech mit HugoHannsGMBH',4,4,1);
+INSERT INTO EVENT VALUES				(6,'Gesrpaech mit HugoHannsGMBH',4,4,1);
+INSERT INTO EVENT VALUES				(7,'Gesrpaech mit HugoHannsGMBH',4,4,2);
 
 --Tabelle EVENT_INFO		
 INSERT INTO EVENT_INFO VALUES			(1,'200',1,4);
