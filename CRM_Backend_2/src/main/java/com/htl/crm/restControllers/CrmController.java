@@ -76,9 +76,9 @@ public class CrmController {
 		for (Person person : pl) {
 			person.getPDataFromType(password);
 			for (PData pdata : person.getPData()) {
-				if (pdata.getPDatatype().getId() == pdatatypeRepo.findBy("password").getId()) {
+				if (pdata.getPDatatype().getId() == pdatatypeRepo.findByType("password").getId()) {
 					if (pdata.getValue().equals(password)) {
-						if (pdata.getPDatatype().getId() == pdatatypeRepo.findBy("username").getId()) {
+						if (pdata.getPDatatype().getId() == pdatatypeRepo.findByType("username").getId()) {
 							if (pdata.getValue().equals(username))
 								return ResponseEntity.status(HttpStatus.OK).body(Long.toString(pdata.getId()));
 						}
