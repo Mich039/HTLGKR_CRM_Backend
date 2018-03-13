@@ -30,6 +30,7 @@ import com.htl.crm.repositories.PDatatypeRepo;
 import com.htl.crm.repositories.PersonRepo;
 import com.htl.crm.transferclasses.AddressTO;
 import com.htl.crm.transferclasses.Contact;
+import com.htl.crm.transferclasses.ContactlistTO;
 import com.htl.crm.transferclasses.PersonData;
 
 @RestController("/help/")
@@ -106,6 +107,9 @@ public class CrmController {
 					c.setEmail(person.getPDataFromType("e-mail").getValue());
 					c.setAdresse(person.getPDataFromType("address").getValue());
 					contactList.add(c);
+					ContactlistTO contactlistTO = new ContactlistTO();
+					contactlistTO.setContactlist(contactList);
+					
 				}
 		}
 		return ResponseEntity.status(HttpStatus.OK).body(contactList);
