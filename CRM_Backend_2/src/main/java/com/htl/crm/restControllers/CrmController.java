@@ -59,7 +59,6 @@ public class CrmController {
 	@Autowired
 	PDataRepo pDataRepo;
 
-	
 	@GetMapping(value = "/putPers", produces = "application/json")
 	public ResponseEntity<AddressTO> putPers() {
 
@@ -79,7 +78,7 @@ public class CrmController {
 		return ResponseEntity.status(HttpStatus.OK).body(ato);
 	}
 
-	//TESTED!!
+	// TESTED!!
 	@PostMapping(value = "/login/logindata", produces = "application/json")
 	public ResponseEntity<String> logindata(@RequestBody PostLogin data) {
 
@@ -113,7 +112,7 @@ public class CrmController {
 		return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
 	}
 
-	//TESTING IN PROGRESS
+	// TESTING IN PROGRESS
 	@GetMapping(value = "/getcontacts", produces = "application/json")
 	public ResponseEntity<LinkedList<Contact>> kontakte() {
 		LinkedList<Contact> contactList = new LinkedList<>();
@@ -135,7 +134,30 @@ public class CrmController {
 		return ResponseEntity.status(HttpStatus.OK).body(contactList);
 	}
 
-	//TESTED !!
+	@GetMapping(value = "/getcontact/{id}", produces = "application/json")
+	public ResponseEntity<LinkedList<Contact>> kontakt(@PathVariable int id) {
+		LinkedList<Contact> contactList = new LinkedList<>();
+		List<Person> pl = personRepo.findAll();
+		for (Person person : pl) {
+			if (person.getPDataFromType("persontype") != null) {
+				if (person.getPDataFromType("persontype").getValue().equals("contact") && person.getId() == id) {
+					Contact c = new Contact();
+					c.setFirstname(person.getPDataFromType("firstname").getValue());
+					c.setLastname(person.getPDataFromType("lastname").getValue());
+					c.setPhonenumber(person.getPDataFromType("phonenumber").getValue());
+					c.setEmail(person.getPDataFromType("e-mail").getValue());
+					c.setAdresse(person.getPDataFromType("address").getValue());
+					contactList.add(c);
+					ContactlistTO contactlistTO = new ContactlistTO();
+					contactlistTO.setContactlist(contactList);
+
+				}
+			}
+		}
+		return ResponseEntity.status(HttpStatus.OK).body(contactList);
+	}
+
+	// TESTED !!
 	@GetMapping(value = "/PDataTyps", produces = "application/json")
 	public ResponseEntity<LinkedList<Object[]>> pDataTyps() {
 		LinkedList<Object[]> pdtl = new LinkedList<>();
@@ -168,7 +190,7 @@ public class CrmController {
 				if (person.getPDataFromType("lastname") != null) {
 					pdt.setLastname(person.getPDataFromType("lastname").getValue());
 				}
-				
+
 				pdt.setId(person.getId());
 				pdt.setRole_id(person.getPRole().getId());
 				pdt.setRole_name(person.getPRole().getRoleText());
