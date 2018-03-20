@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 import com.htl.crm.domain.AccessRight;
+import com.htl.crm.domain.Address;
 import com.htl.crm.domain.Addresshistorie;
 import com.htl.crm.domain.PData;
 import com.htl.crm.domain.Person;
@@ -57,7 +58,7 @@ public class SimonRestController {
 	private PersonRepo personRepo;
 	
 	@GetMapping(value = "/profile/{id}", produces = "application/json")
-	public ResponseEntity<Profile> profile(@PathVariable int id) {
+	public ResponseEntity<String> profile(@PathVariable int id) {
 		Profile profile = new Profile();
 		Person person = personRepo.findByid((long)id);
 		if(person == null)
@@ -73,10 +74,10 @@ public class SimonRestController {
 					todo.getTodo().getText()));
 		}
 		
-		return ResponseEntity.status(HttpStatus.OK).body(profile);
+		return ResponseEntity.status(HttpStatus.OK).body(profile.String());
 	}
 
-	/*@GetMapping(value = "/contact/{id}", produces = "application/json")
+	@GetMapping(value = "/contact/{id}", produces = "application/json")
 	public ResponseEntity<String> contact(@PathVariable int id) {
 		Contact_person p_contact = new Contact_person();
 		Contact_company c_contact = new Contact_company();
@@ -88,10 +89,11 @@ public class SimonRestController {
 		if(person.getPDataFromType("personORcompany").getValue().equals("person")) 
 		{
 			p_contact.setSalutation(person.getPDataFromType("salutation").getValue());
+			p_contact.setAdditional_salutation(person.getPDataFromType("additional_salutation").getValue());  //NEW
 			p_contact.setEmail(person.getPDataFromType("email").getValue());
 			p_contact.setInterests(person.getPDataFromType("interests").getValue());
 			p_contact.setPhonenumber(person.getPDataFromType("phonenumber").getValue());
-				
+			p_contact.setJob_history(person.getPDataFromType("job_history").getValue());
 				
 			//get Address Information:
 			List<Addresshistorie> addresshistories= person.getAddresshistories();
@@ -102,54 +104,66 @@ public class SimonRestController {
 					latestAddress = addresshistory;
 			}
 			
-			String streetnumber=null,postcode=null,town=null;
 			p_contact.setStreet(latestAddress.getAddress().getStreetAddress());
-			p_contact.setStreetnumber(streetnumber);
-			p_contact.setPostcode(latestAddress.getAddress().getPostalcode());
-			p_contact.setTown(town);
-				
+			p_contact.setStreetnumber(latestAddress.getAddress().getDoorNumber().toString());
+			p_contact.setPostcode(latestAddress.getAddress().getPostalcode().toString());
+			p_contact.setTown(latestAddress.getAddress().getCity());
+			
 			return ResponseEntity.status(HttpStatus.OK).body(p_contact.toString());
+			/**DONE*/
 		}
 			
 		if(person.getPDataFromType("personORcompany").getValue().equals("company")) {
-				try {
-					c_contact.setCompany_name(person.getPDataFromType("company_name").getValue());
-					c_contact.setDescription(person.getPDataFromType("description").getValue());
-					c_contact.setManagement(person.getPDataFromType("manager").getValue());
-					c_contact.setDomain(person.getPDataFromType("domain").getValue());
-					c_contact.setConnection(person.getPDataFromType("connection").getValue());
+			try {
+				c_contact.setCompany_name(person.getPDataFromType("company_name").getValue());
+				c_contact.setDescription(person.getPDataFromType("description").getValue());
+				c_contact.setManagement(person.getPDataFromType("manager").getValue());
+				c_contact.setDomain(person.getPDataFromType("domain").getValue());
+				c_contact.setConnection(person.getPDataFromType("connection").getValue());
 					
-				}catch(NullPointerException ex) {
-					return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error: Getting data for contact");
-				}
-					//Address:
-					List<Addresshistorie> address = person.getAddresshistories();
-					String street=null,streetnumber=null,postcode=null,town=null;
-					c_contact.setStreet(street);
-					c_contact.setStreetnumber(streetnumber);
-					c_contact.setPostcode(postcode);
-					c_contact.setTown(town);
-					
-					
-					//Lists:
-					LinkedList<Contact_person> items = new LinkedList<>();
-					for (Contact_person item : p.get?("contact_persons").getValue()) {
-						items.add(item);
-					}
-					c_contact.setContact_persons(items);
-					
-					LinkedList<String> items = new LinkedList<>();
-					for (String item : p.get?("contact_persons").getValue()) {
-						items.add(item);
-					}
-					c_contact.setCompany_conversations(items);
-				}
-			
+			}catch(NullPointerException ex) { //change if necessary\\
+				return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error: Getting data for contact");
 			}
+			
+			///get Address Information:
+			List<Addresshistorie> addresshistories= person.getAddresshistories();
+			Addresshistorie latestAddress = null;
+			for(Addresshistorie addresshistory : addresshistories) {
+				Address address = addresshistory.getAddress();
+				if(latestAddress==null || address.getCreationDate().after(latestAddress.getAddress().getCreationDate()))
+					latestAddress = addresshistory;
+			}
+			
+			c_contact.setStreet(latestAddress.getAddress().getStreetAddress());
+			c_contact.setStreetnumber(latestAddress.getAddress().getDoorNumber().toString());
+			c_contact.setPostcode(latestAddress.getAddress().getPostalcode().toString());
+			c_contact.setTown(latestAddress.getAddress().getCity());
+			
+			
+			//Lists:
+			/**********Contact_persons***********/
+			
+			/*for	(Contact_person cp : c_contact.getContact_persons()) {
+				person.getId();
+			}
+			
+			LinkedList<Contact_person> contact_persons = c_contact.getContact_persons();
+			c_contact.setContact_persons(contact_persons);//*/
+			
+			
+			/*******company_conversations********/
+			/*LinkedList<String> items = new LinkedList<>();
+			/*for (String item : p.get?("contact_persons").getValue()) {
+				items.add(item);
+			}
+			c_contact.setCompany_conversations(items);//*/
+			
+			/**************images***************/
+			
+			return ResponseEntity.status(HttpStatus.OK).body(c_contact.toString());
 		}
-		
 		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("No such person/company found!");
-	}*/<
+	}
 	
 	//https://docs.google.com/document/d/14KWpFEtpOOrR0zdW04ybHCI8aZDmVP_ZK8W8jCoEd5U/edit#
 }
