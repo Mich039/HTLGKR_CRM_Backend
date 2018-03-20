@@ -4,6 +4,7 @@ import static org.springframework.test.web.client.match.MockRestRequestMatchers.
 
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
@@ -37,6 +38,7 @@ import com.htl.crm.repositories.PersonRepo;
 import com.htl.crm.transferclasses.AddressTO;
 import com.htl.crm.transferclasses.Contact;
 import com.htl.crm.transferclasses.ContactlistTO;
+import com.htl.crm.transferclasses.PDataRole;
 import com.htl.crm.transferclasses.PersonData;
 import com.htl.crm.transferclasses.PostLogin;
 
@@ -131,15 +133,45 @@ public class CrmController {
 	}
 
 	@GetMapping(value = "/PDataTyps", produces = "application/json")
-	public ResponseEntity<LinkedList <Object[]>> pDataTyps() {
-		LinkedList <Object[]>pdtl=new LinkedList<>();
-		
-		for (PDatatype p:pdatatypeRepo.findAll()) {
-			if(p!=null) {
-				Object[] odt=new Object[] {p.getId(),p.getType()};
+	public ResponseEntity<LinkedList<Object[]>> pDataTyps() {
+		LinkedList<Object[]> pdtl = new LinkedList<>();
+
+		for (PDatatype p : pdatatypeRepo.findAll()) {
+			if (p != null) {
+				Object[] odt = new Object[] { p.getId(), p.getType() };
 				pdtl.add(odt);
 			}
 		}
 		return ResponseEntity.status(HttpStatus.OK).body(pdtl);
+	}
+
+	@GetMapping(value = "/PDataRoles", produces = "application/json")
+	public ResponseEntity<LinkedList<PDataRole>> PDataRoles() {
+		LinkedList<PDataRole> pdtrl = new LinkedList<>();
+
+		for (Person person : personRepo.findAll()) {
+
+			LinkedList<String> wishRole = new LinkedList<>(
+					Arrays.asList("headmaster", "teacher", "student", "secretary", "classteacher"));
+
+			if (wishRole.contains(person.getPRole().getRoleText())) {
+				PDataRole pdt = new PDataRole();
+
+				if (person.getPDataFromType("firstname") != null) {
+					pdt.setFirstname(person.getPDataFromType("firstname").getValue());
+				}
+
+				if (person.getPDataFromType("lastname") != null) {
+					pdt.setLastname(person.getPDataFromType("lastname").getValue());
+				}
+				
+				pdt.setId(person.getId());
+				pdt.setRole_id(person.getPRole().getId());
+				pdt.setRole_name(person.getPRole().getRoleText());
+				pdtrl.add(pdt);
+			}
+		}
+
+		return ResponseEntity.status(HttpStatus.OK).body(pdtrl);
 	}
 }

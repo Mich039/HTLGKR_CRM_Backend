@@ -82,6 +82,7 @@ public class RestAndreas {
 	}
 		
 
+	//Daten für Company, nur iD
 		@GetMapping(value="/getconversatoinsofcompany", produces = "application/json")
 		public ResponseEntity<ArrayList<Conversation>> getConversationsOfCompany(@PathVariable long id){
 			Person p = Persons.findOne(id);
