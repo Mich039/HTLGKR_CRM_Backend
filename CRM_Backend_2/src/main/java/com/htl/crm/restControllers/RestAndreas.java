@@ -28,36 +28,32 @@ import com.htl.crm.repositories.PDatatypeRepo;
 import com.htl.crm.repositories.PRoleRepo;
 import com.htl.crm.repositories.PersonRepo;
 import com.htl.crm.transferclasses.AddContact;
-import com.htl.crm.transferclasses.Conversation;
+import com.htl.crm.transferclasses.ConversationTO;
 import com.htl.crm.transferclasses.PersonData;
 
 @RestController
 @EnableWebMvc
 public class RestAndreas {
 
-	
-		
-		
 	@Autowired
-	private PersonRepo Persons;
+	private PersonRepo persons;
 	@Autowired
-	private	PDatatypeRepo PDataTypes;
+	private PDatatypeRepo PDataTypes;
 	@Autowired
-	private	AddressRepo Addresses;
+	private AddressRepo Addresses;
 	@Autowired
-	private	PRoleRepo PRoles;
+	private PRoleRepo PRoles;
 	@Autowired
-	private	EventRepo Events;
+	private EventRepo Events;
 	@Autowired
-	private	EventTypeRepo EventTypes;
+	private EventTypeRepo eventTypes;
 	@Autowired
-	private	PDataRepo pDataRepo;
+	private PDataRepo pDataRepo;
 
 	
 	//TESTED!!
-	@Transactional
 	@PostMapping(value = "/addcontact", produces = "application/json")
-	public ResponseEntity<String> addPersonalTutorial(@RequestBody AddContact contact) {
+	public ResponseEntity<String> addPersonalTutorial(@RequestBody AddContact contact) throws Exception {
 		Person p = new Person();
 		PRole role = PRoles.findByRoleText(contact.getRole());
 		if (role == null) {
@@ -65,7 +61,7 @@ public class RestAndreas {
 
 		}
 		p.setPRole(role);
-		Person person = Persons.save(p);
+		Person person = persons.save(p);
 		for (PersonData persondata : contact.getPersonData()) {
 			PData pdata = new PData();
 			PDatatype pdatatype = PDataTypes.findByType(persondata.getDatatype());
@@ -78,30 +74,35 @@ public class RestAndreas {
 			p.addPData(pDataRepo.save(pdata));
 			p.addPData(pdata);
 		}
-			
-		
 		return ResponseEntity.status(HttpStatus.CREATED).body(null);
 	}
-		
 		//Testing in progress by michi
-		@GetMapping(value="/getconversatoinsofcompany", produces = "application/json")
-		public ResponseEntity<ArrayList<Conversation>> getConversationsOfCompany(@PathVariable long id){
-			Person p = Persons.findOne(id);
-			
-			ArrayList<Event> events = (ArrayList<Event>) Events.findByPerson(p);
-			ArrayList<Conversation> convs = new ArrayList<>();
-			for(Event e : events) {
-				if(e.getEventType().getEventTypeId() == EventTypes.findByType("company_conversation").getEventTypeId())
-					convs.add(new Conversation(e.getEventInfoByType("start_datetime").getValue(),
-								e.getEventInfoByType("company_person").getValue(),
-								e.getPerson().getPDataFromType("first_name")+" "+e.getPerson().getPDataFromType("last_name") , 
-								e.getEventInfoByType("conversatoin_content").getValue()
-								)
-							);
-			}
-			return ResponseEntity.status(HttpStatus.OK).body(convs);
-			
+	@GetMapping(value = "/getconversatoinsforcontact/{id}", produces = "application/json")
+	public ResponseEntity<ArrayList<ConversationTO>> getConversationsOfContact(@PathVariable long id) {
+		Person p = persons.findByid(id);
+		if (p == null) {
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
 		}
-
+		ArrayList<Event> events = (ArrayList<Event>) Events.findByPerson(p);
+		ArrayList<ConversationTO> convs = new ArrayList<>();
+		for (Event event : events) {
+			if(event.getEventType().getType().equals("company_conversation")) {
+				ConversationTO conversationTO = new ConversationTO();
+				if (!event.getEventpersons().isEmpty()) {
+					conversationTO.setPerson_company(event.getEventpersons().get(0).getPerson().getPDataFromType("firstname").getValue());
+				}
+				conversationTO.setPerson_school(event.getPerson().getPDataFromType("firstname").getValue());
+				if(event.getEventInfoByType("conversation_content") != null) {
+					conversationTO.setConversation_content(event.getEventInfoByType("conversation_content").getValue());
+				}
+				if(event.getEventInfoByType("start_datetime") != null) {
+				conversationTO.setTime_added(event.getEventInfoByType("start_datetime").getValue());
+				}
+				convs.add(conversationTO);
+			}
+		}
+		return ResponseEntity.status(HttpStatus.OK).body(convs);
 
 	}
+
+}
