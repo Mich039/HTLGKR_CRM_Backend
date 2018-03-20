@@ -29,6 +29,10 @@ public class Event implements Serializable {
 	@JoinColumn(name="ADDRESS_FK", nullable=false)
 	private Address address;
 
+	// bi-directional many-to-one association to Event
+		@OneToMany(mappedBy = "event")
+	private List<EventPerson> eventpersons;
+	
 	//bi-directional many-to-one association to EventType
 	@ManyToOne
 	@JoinColumn(name="EVENT_TYPE_FK", nullable=false)
@@ -116,5 +120,15 @@ public class Event implements Serializable {
 		return null;
 		
 	}
+
+	public List<EventPerson> getEventpersons() {
+		return eventpersons;
+	}
+
+	public void setEventpersons(List<EventPerson> eventpersons) {
+		this.eventpersons = eventpersons;
+	}
+	
+	
 
 }

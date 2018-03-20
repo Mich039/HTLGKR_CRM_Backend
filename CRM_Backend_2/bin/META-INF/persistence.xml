@@ -23,5 +23,6 @@
 		<class>com.htl.crm.domain.Relation</class>
 		<class>com.htl.crm.domain.Template</class>
 		<class>com.htl.crm.domain.Todo</class>
+		<class>com.htl.crm.domain.EventPerson</class>
 	</persistence-unit>
 </persistence>
