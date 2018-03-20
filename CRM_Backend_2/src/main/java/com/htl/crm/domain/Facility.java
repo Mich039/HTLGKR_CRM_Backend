@@ -1,3 +1,4 @@
+
 package com.htl.crm.domain;
 
 import java.io.Serializable;
@@ -13,7 +14,7 @@ import java.util.List;
 @Table(name="FACILITY")
 @NamedQuery(name="Facility.findAll", query="SELECT f FROM Facility f")
 public class Facility implements Serializable {
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 1;
 
 	@Id
 	@SequenceGenerator(name="FACILITY_ID_GENERATOR", sequenceName="FACILITY_ID_SEQ")

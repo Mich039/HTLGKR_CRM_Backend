@@ -26,12 +26,14 @@ import com.fasterxml.jackson.databind.jsonFormatVisitors.JsonArrayFormatVisitor;
 import com.htl.crm.domain.AccessRight;
 import com.htl.crm.domain.Address;
 import com.htl.crm.domain.ArPr;
+import com.htl.crm.domain.Facility;
 import com.htl.crm.domain.PData;
 import com.htl.crm.domain.PDatatype;
 import com.htl.crm.domain.Person;
 import com.htl.crm.repositories.AccessRightRepo;
 import com.htl.crm.repositories.AddressRepo;
 import com.htl.crm.repositories.ArPrRepo;
+import com.htl.crm.repositories.FacilityRepo;
 import com.htl.crm.repositories.PDataRepo;
 import com.htl.crm.repositories.PDatatypeRepo;
 import com.htl.crm.repositories.PersonRepo;
@@ -41,6 +43,7 @@ import com.htl.crm.transferclasses.ContactlistTO;
 import com.htl.crm.transferclasses.PDataRole;
 import com.htl.crm.transferclasses.PersonData;
 import com.htl.crm.transferclasses.PostLogin;
+import com.htl.crm.transferclasses.FacilityTO;
 
 @RestController("/help/")
 @EnableWebMvc
@@ -58,6 +61,8 @@ public class CrmController {
 	private AddressRepo addressRepo;
 	@Autowired
 	PDataRepo pDataRepo;
+	@Autowired
+	FacilityRepo facilityRepo;
 
 	@GetMapping(value = "/putPers", produces = "application/json")
 	public ResponseEntity<AddressTO> putPers() {
@@ -135,26 +140,38 @@ public class CrmController {
 	}
 
 	@GetMapping(value = "/getcontact/{id}", produces = "application/json")
-	public ResponseEntity<LinkedList<Contact>> kontakt(@PathVariable int id) {
-		LinkedList<Contact> contactList = new LinkedList<>();
+	public ResponseEntity<Contact> kontakt(@PathVariable int id) {
+		Contact c = new Contact();
 		List<Person> pl = personRepo.findAll();
 		for (Person person : pl) {
 			if (person.getPDataFromType("persontype") != null) {
 				if (person.getPDataFromType("persontype").getValue().equals("contact") && person.getId() == id) {
-					Contact c = new Contact();
 					c.setFirstname(person.getPDataFromType("firstname").getValue());
 					c.setLastname(person.getPDataFromType("lastname").getValue());
 					c.setPhonenumber(person.getPDataFromType("phonenumber").getValue());
 					c.setEmail(person.getPDataFromType("e-mail").getValue());
 					c.setAdresse(person.getPDataFromType("address").getValue());
-					contactList.add(c);
-					ContactlistTO contactlistTO = new ContactlistTO();
-					contactlistTO.setContactlist(contactList);
+					return ResponseEntity.status(HttpStatus.OK).body(c);
 
 				}
 			}
 		}
-		return ResponseEntity.status(HttpStatus.OK).body(contactList);
+		return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null);
+	}
+	
+	@GetMapping(value = "/getFacility/{id}",produces="application/json")
+	public ResponseEntity <FacilityTO> facility(@PathVariable int id) {
+		FacilityTO f=new FacilityTO();
+		List<Facility> facilityList=facilityRepo.findAll();
+		for (Facility facility : facilityList) {
+			if (facility.getId()==id) {
+				f.setId(id);
+				f.setName(facility.getName());
+				return ResponseEntity.status(HttpStatus.OK).body(f);
+			}
+		}
+		
+		return ResponseEntity.status(HttpStatus.I_AM_A_TEAPOT).body(null);
 	}
 
 	// TESTED !!

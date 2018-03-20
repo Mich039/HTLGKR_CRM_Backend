@@ -1,7 +1,5 @@
 package com.htl.crm.repositories;
 
-import javax.persistence.NamedQuery;
-
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
