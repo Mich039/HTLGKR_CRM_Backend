@@ -6,63 +6,66 @@ import javax.persistence.*;
 import java.util.LinkedList;
 import java.util.List;
 
-
 /**
  * The persistent class for the PERSON database table.
  * 
  */
 @Entity
-@Table(name="PERSON")
-@NamedQuery(name="Person.findAll", query="SELECT p FROM Person p")
+@Table(name = "PERSON")
+@NamedQuery(name = "Person.findAll", query = "SELECT p FROM Person p")
 public class Person implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@SequenceGenerator(name="PERSON_ID_GENERATOR", sequenceName="PERSON_ID_SEQ")
-	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="PERSON_ID_GENERATOR")
-	@Column(unique=true, nullable=false, precision=22)
+	@SequenceGenerator(name = "PERSON_ID_GENERATOR", sequenceName = "PERSON_ID_SEQ")
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "PERSON_ID_GENERATOR")
+	@Column(unique = true, nullable = false, precision = 22)
 	private long id;
 
-	//bi-directional many-to-one association to Addresshistorie
-	@OneToMany(mappedBy="person")
+	// bi-directional many-to-one association to Addresshistorie
+	@OneToMany(mappedBy = "person")
 	private List<Addresshistorie> addresshistories;
 
-	//bi-directional many-to-one association to Event
-	@OneToMany(mappedBy="person")
+	// bi-directional many-to-one association to Event
+	@OneToMany(mappedBy = "person")
 	private List<Event> events;
 
-	//bi-directional many-to-one association to PRole
+	// bi-directional many-to-one association to Event
+	@OneToMany(mappedBy = "person")
+	private List<EventPerson> eventpersons;
+
+	// bi-directional many-to-one association to PRole
 	@ManyToOne
-	@JoinColumn(name="P_ROLE_FK", nullable=false)
+	@JoinColumn(name = "P_ROLE_FK", nullable = false)
 	private PRole PRole;
 
-	//bi-directional many-to-one association to Relation
+	// bi-directional many-to-one association to Relation
 	@ManyToOne
-	@JoinColumn(name="RELATION_FK", nullable=false)
+	@JoinColumn(name = "RELATION_FK", nullable = false)
 	private Relation relation;
 
-	//bi-directional many-to-one association to PersonTodo
-	@OneToMany(mappedBy="person")
+	// bi-directional many-to-one association to PersonTodo
+	@OneToMany(mappedBy = "person")
 	private List<PersonTodo> personTodos;
 
-	//bi-directional many-to-one association to PData
-	@OneToMany(mappedBy="person")
+	// bi-directional many-to-one association to PData
+	@OneToMany(mappedBy = "person")
 	private List<PData> PData;
 
-	//bi-directional many-to-one association to Receiver
-	@OneToMany(mappedBy="person")
+	// bi-directional many-to-one association to Receiver
+	@OneToMany(mappedBy = "person")
 	private List<Receiver> receivers;
 
-	//bi-directional many-to-one association to Relation
-	@OneToMany(mappedBy="person")
+	// bi-directional many-to-one association to Relation
+	@OneToMany(mappedBy = "person")
 	private List<Relation> relations;
 
-	//bi-directional many-to-one association to Template
-	@OneToMany(mappedBy="person")
+	// bi-directional many-to-one association to Template
+	@OneToMany(mappedBy = "person")
 	private List<Template> templates;
 
 	public Person() {
-		PData  = new LinkedList<PData>();
+		PData = new LinkedList<PData>();
 		personTodos = new LinkedList<PersonTodo>();
 		receivers = new LinkedList<Receiver>();
 		relations = new LinkedList<>();
@@ -246,15 +249,24 @@ public class Person implements Serializable {
 
 		return template;
 	}
+
+	public PData getPDataFromType(String type) {
+		for (PData pdata : this.PData) {
+			if (pdata.getPDatatype().getType().equals(type)) {
+				return pdata;
+			}
+		}
+		return null;
+	}
+
+	public List<EventPerson> getEventpersons() {
+		return eventpersons;
+	}
+
+	public void setEventpersons(List<EventPerson> eventpersons) {
+		this.eventpersons = eventpersons;
+	}
+
 	
-    public PData getPDataFromType(String type) {
-        for(PData pdata : this.PData) {
-               if(pdata.getPDatatype().getType().equals(type)) {
-                      return pdata;
-               }
-        }
-        return null;
-  }
-
-
+	
 }
