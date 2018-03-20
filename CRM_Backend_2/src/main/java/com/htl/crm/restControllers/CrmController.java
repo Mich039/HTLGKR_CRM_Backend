@@ -59,6 +59,7 @@ public class CrmController {
 	@Autowired
 	PDataRepo pDataRepo;
 
+	
 	@GetMapping(value = "/putPers", produces = "application/json")
 	public ResponseEntity<AddressTO> putPers() {
 
@@ -78,6 +79,7 @@ public class CrmController {
 		return ResponseEntity.status(HttpStatus.OK).body(ato);
 	}
 
+	//TESTED!!
 	@PostMapping(value = "/login/logindata", produces = "application/json")
 	public ResponseEntity<String> logindata(@RequestBody PostLogin data) {
 
@@ -111,6 +113,7 @@ public class CrmController {
 		return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
 	}
 
+	//TESTING IN PROGRESS
 	@GetMapping(value = "/getcontacts", produces = "application/json")
 	public ResponseEntity<LinkedList<Contact>> kontakte() {
 		LinkedList<Contact> contactList = new LinkedList<>();
@@ -132,6 +135,7 @@ public class CrmController {
 		return ResponseEntity.status(HttpStatus.OK).body(contactList);
 	}
 
+	//TESTED !!
 	@GetMapping(value = "/PDataTyps", produces = "application/json")
 	public ResponseEntity<LinkedList<Object[]>> pDataTyps() {
 		LinkedList<Object[]> pdtl = new LinkedList<>();

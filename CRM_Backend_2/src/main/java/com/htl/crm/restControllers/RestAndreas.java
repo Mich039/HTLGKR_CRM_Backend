@@ -50,6 +50,7 @@ public class RestAndreas {
 	@Autowired
 	private PDataRepo pDataRepo;
 
+	//TESTED!!
 	@PostMapping(value = "/addcontact", produces = "application/json")
 	public ResponseEntity<String> addPersonalTutorial(@RequestBody AddContact contact) throws Exception {
 		Person p = new Person();
@@ -74,6 +75,7 @@ public class RestAndreas {
 		}
 		return ResponseEntity.status(HttpStatus.CREATED).body(null);
 	}
+<<<<<<< HEAD
 
 	@GetMapping(value="/getconversatoinsofcompany", produces = "application/json")
 		public ResponseEntity<ArrayList<ConversationTO>> getConversationsOfCompany(@PathVariable long id){
@@ -93,6 +95,10 @@ public class RestAndreas {
 			return ResponseEntity.status(HttpStatus.OK).body(convs);
 	}
 	
+=======
+
+		//Testing in progress by michi
+>>>>>>> branch 'master' of https://github.com/Mich039/HTLGKR_CRM_Backend.git
 	@GetMapping(value = "/getconversatoinsforcontact/{id}", produces = "application/json")
 	public ResponseEntity<ArrayList<ConversationTO>> getConversationsOfContact(@PathVariable long id) {
 		Person p = persons.findByid(id);
