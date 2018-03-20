@@ -53,6 +53,8 @@ public class RestAndreas {
 	@Autowired
 	private	PDataRepo pDataRepo;
 
+	
+	//TESTED!!
 	@Transactional
 	@PostMapping(value = "/addcontact", produces = "application/json")
 	public ResponseEntity<String> addPersonalTutorial(@RequestBody AddContact contact) {
@@ -81,7 +83,7 @@ public class RestAndreas {
 		return ResponseEntity.status(HttpStatus.CREATED).body(null);
 	}
 		
-
+		//Testing in progress by michi
 		@GetMapping(value="/getconversatoinsofcompany", produces = "application/json")
 		public ResponseEntity<ArrayList<Conversation>> getConversationsOfCompany(@PathVariable long id){
 			Person p = Persons.findOne(id);
