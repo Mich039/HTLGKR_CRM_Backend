@@ -50,7 +50,6 @@ public class RestAndreas {
 	@Autowired
 	private PDataRepo pDataRepo;
 
-	
 	//TESTED!!
 	@PostMapping(value = "/addcontact", produces = "application/json")
 	public ResponseEntity<String> addPersonalTutorial(@RequestBody AddContact contact) throws Exception {
@@ -76,6 +75,7 @@ public class RestAndreas {
 		}
 		return ResponseEntity.status(HttpStatus.CREATED).body(null);
 	}
+
 		//Testing in progress by michi
 	@GetMapping(value = "/getconversatoinsforcontact/{id}", produces = "application/json")
 	public ResponseEntity<ArrayList<ConversationTO>> getConversationsOfContact(@PathVariable long id) {

@@ -2,6 +2,7 @@ package com.htl.crm.transferclasses;
 
 public class Contact_person {
 	private String salutation; //Anrede
+	private String additional_salutation;
 	private String street;
 	private String postcode;
 	private String streetnumber;
@@ -13,10 +14,11 @@ public class Contact_person {
 	
 	public Contact_person() {}
 	
-	public Contact_person(String salutation, String streetname, String postal_code, String street_number, String town_name
+	public Contact_person(String salutation, String additional, String streetname, String postal_code, String street_number, String town_name
 						  ,String mail, String phone, String interests, String jobs_url) {
 		super();
 		this.setSalutation(salutation);
+		this.setAdditional_salutation(additional);
 		this.setStreet(streetname);
 		this.setPostcode(postal_code);
 		this.setStreetnumber(street_number);
@@ -40,7 +42,7 @@ public class Contact_person {
 	public void setSalutation(String salutation) {
 		this.salutation = salutation;
 	}
-
+	
 	/**
 	 * @GET street name*/
 	
@@ -151,6 +153,19 @@ public class Contact_person {
 	
 	public void setJob_history(String job_history) {
 		this.job_history = job_history;
+	}
+
+	/**
+	 * @GET 2nd salutation*/
+	public String getAdditional_salutation() {
+		return additional_salutation;
+	}
+	
+	/**
+	 * @SET 2nd salutation*/
+
+	public void setAdditional_salutation(String additional_salutation) {
+		this.additional_salutation = additional_salutation;
 	}
 	
 }

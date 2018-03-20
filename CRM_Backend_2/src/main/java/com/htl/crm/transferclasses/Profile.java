@@ -34,4 +34,9 @@ public class Profile implements Serializable{
 	public void setTodolist(LinkedList<TodoTrClass> todolist) {
 		this.todolist = todolist;
 	}
+	
+	//@Override
+	public String String() {
+		return "{firstname:"+firstname+",lastname:"+lastname+",todolist:"+todolist;
+	}
 }
